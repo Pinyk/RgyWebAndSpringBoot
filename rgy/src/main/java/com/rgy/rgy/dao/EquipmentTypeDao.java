@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EquipmentTypeDao extends JpaRepository<EquipmentType,Integer> {
     EquipmentType findByEquipmentTypeName(String name);
+
+    EquipmentType findByEquipmentTypeID(Integer EquipmentTypeID);
 }

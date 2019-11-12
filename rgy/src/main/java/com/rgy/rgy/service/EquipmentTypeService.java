@@ -7,6 +7,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @Author: gaoyk
+ * @Date: 2019/10/27 11:15
+ */
+
 @Service
 public class EquipmentTypeService {
     @Autowired
@@ -16,25 +21,15 @@ public class EquipmentTypeService {
         return equipmentTypeDao.findAll();
     }
 
-    public EquipmentType findByName(String name){
-        return equipmentTypeDao.findByEquipmentTypeName(name);
+    public void eadd(String equipmentTypeName){
+        equipmentTypeDao.save(new EquipmentType(equipmentTypeName,0));
     }
 
-    public void add(EquipmentType equipmentType){
-        equipmentTypeDao.save(equipmentType);
+    public EquipmentType find(String equipmentTypeName){
+        return equipmentTypeDao.findByEquipmentTypeName(equipmentTypeName);
     }
 
-    public void update(EquipmentType equipmentType){
-        equipmentTypeDao.save(equipmentType);
+    public EquipmentType findById(Integer equipmentTypeID){
+        return equipmentTypeDao.findByEquipmentTypeID(equipmentTypeID);
     }
-
-    public EquipmentType delete(int id){
-        EquipmentType current =equipmentTypeDao.findById(id).orElse(new EquipmentType(-1,"null","0"));
-        if(current.getEquipmentTypeID() > -1){
-            equipmentTypeDao.deleteById(id);
-        }
-        return current;
-    }
-
-
 }

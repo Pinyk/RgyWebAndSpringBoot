@@ -18,19 +18,19 @@ import javax.persistence.*;
 public class Equipment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int equipmentId;
+    private Integer equipmentId;
 
     @Column
-    private int equipmentTypeID;
+    private Integer equipmentTypeID;
 
     @Column
     private String equipmentName;
 
     @Column
-    private int voltageLevel;
+    private String voltageLevel;
 
     @Column
-    private String manufactorer;
+    private String manuFactorer;
 
     @Column
     private String equipmentModel;
@@ -48,5 +48,5 @@ public class Equipment {
     private String remarks;
 
     @Column
-    private int infoState;
+    private Integer infoState;
 }

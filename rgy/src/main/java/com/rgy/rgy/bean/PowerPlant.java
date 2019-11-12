@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class PowerPlant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int powerPlantID;
+    private Integer powerPlantID;
 
     @Column
     private String powerPlantName;
