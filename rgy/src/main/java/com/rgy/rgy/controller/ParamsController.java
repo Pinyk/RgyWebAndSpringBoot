@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
  * @Author: gaoyk
  * @Date: 2019/11/5 22:13
  */
+
+@CrossOrigin
 @RestController
 @RequestMapping("/params")
 public class ParamsController {

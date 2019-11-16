@@ -4,6 +4,7 @@ import com.rgy.rgy.bean.Result;
 import com.rgy.rgy.bean.User;
 import com.rgy.rgy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +16,7 @@ import java.util.List;
  * @Author: Silvia
  * @Date: 2019/11/6  22:49
  */
-
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController {

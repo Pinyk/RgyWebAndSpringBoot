@@ -13,7 +13,7 @@ import java.util.List;
  * @Author: gaoyk
  * @Date: 2019/10/27 11:15
  */
-
+@CrossOrigin
 @RestController
 @RequestMapping("/equipmentType")
 public class EquipmentTypeController {
@@ -31,16 +31,38 @@ public class EquipmentTypeController {
     }
 
     /**
-     * 新增、修改类型
-     * @param equipmentTypeName
+     * 新增设备类型
+     * @param equipmentType
      * @return
      */
     @PostMapping("/add")
-    public Result add(@RequestParam String equipmentTypeName){
-        equipmentTypeService.eadd(equipmentTypeName);
-        return new Result("success","新增成功");
+    public Result add(@RequestBody EquipmentType equipmentType){
+        if(equipmentTypeService.eadd(equipmentType)){
+            return new Result("success","新增成功");
+        }else{
+            return new Result("error","新增失败");
+        }
     }
 
+    /**
+     * 修改设备类型
+     * @param equipmentType
+     * @return
+     */
+    @PostMapping("/update")
+    public Result update(@RequestBody EquipmentType equipmentType){
+        if(equipmentTypeService.update(equipmentType)){
+            return new Result("success","更新成功");
+        }else{
+            return new Result("error","更新失败");
+        }
+    }
+
+    /**
+     * 根据设备类型名查找
+     * @param equipmentTypeName
+     * @return
+     */
     @GetMapping("/findbyName")
     public Result find(@RequestParam String equipmentTypeName){
         EquipmentType equipmentType = equipmentTypeService.find(equipmentTypeName);
@@ -48,6 +70,15 @@ public class EquipmentTypeController {
             return new Result("success","查找成功",equipmentType);
         }else{
             return new Result("error","查找失败");
+        }
+    }
+
+    @DeleteMapping("/delete")
+    public Result delete(@RequestParam Integer equipmentTypeID){
+        if(equipmentTypeService.delete(equipmentTypeID)){
+            return new Result("success","删除成功");
+        }else{
+            return new Result("error","删除失败");
         }
     }
 }

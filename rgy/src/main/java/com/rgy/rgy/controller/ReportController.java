@@ -13,6 +13,8 @@ import java.util.List;
  * @Author: gaoyk
  * @Date: 2019/11/3 21:00
  */
+
+@CrossOrigin
 @RestController
 @RequestMapping("/report")
 public class ReportController {

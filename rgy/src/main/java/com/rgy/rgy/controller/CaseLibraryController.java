@@ -12,6 +12,7 @@ import java.util.List;
  * @Date: 2019/10/28 22:00
  */
 
+@CrossOrigin
 @RestController
 @RequestMapping("/caseLibrary")
 public class CaseLibraryController {

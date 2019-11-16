@@ -13,6 +13,7 @@ import java.util.List;
  * @Date: 2019/10/31 22:02
  */
 
+@CrossOrigin
 @RestController
 @RequestMapping("/items")
 public class ItemsController {

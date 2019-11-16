@@ -5,6 +5,7 @@ import com.rgy.rgy.bean.Result;
 import com.rgy.rgy.bean.Role;
 import com.rgy.rgy.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import java.util.List;
  * @Date: 2019/11/6  22:49
  */
 
+@CrossOrigin
 @RestController
 @RequestMapping("/role")
 public class RoleController {

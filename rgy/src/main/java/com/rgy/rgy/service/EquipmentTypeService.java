@@ -21,15 +21,41 @@ public class EquipmentTypeService {
         return equipmentTypeDao.findAll();
     }
 
-    public void eadd(String equipmentTypeName){
-        equipmentTypeDao.save(new EquipmentType(equipmentTypeName,0));
+    public boolean eadd(EquipmentType equipmentType){
+        equipmentType.setInfoState(0);
+        if(equipmentTypeDao.save(equipmentType) != null){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public EquipmentType find(String equipmentTypeName){
         return equipmentTypeDao.findByEquipmentTypeName(equipmentTypeName);
     }
 
-    public EquipmentType findById(Integer equipmentTypeID){
-        return equipmentTypeDao.findByEquipmentTypeID(equipmentTypeID);
+    public boolean update(EquipmentType equipmentType) {
+        EquipmentType equipmentType1 =
+                equipmentTypeDao.findByEquipmentTypeID(equipmentType.getEquipmentTypeID());
+        if(equipmentType1 == null){
+            return false;
+        }
+        equipmentType1 = equipmentType;
+        if(equipmentTypeDao.save(equipmentType1) != null){
+            equipmentTypeDao.findByEquipmentTypeID(equipmentType1.getEquipmentTypeID()).setInfoState(0);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public boolean delete(Integer equipmentTypeID) {
+        EquipmentType equipmentType = equipmentTypeDao.findByEquipmentTypeID(equipmentTypeID);
+        if(equipmentType != null){
+            equipmentType.setInfoState(1);
+            return true;
+        }else{
+            return false;
+        }
     }
 }

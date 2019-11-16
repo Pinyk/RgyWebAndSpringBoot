@@ -28,8 +28,20 @@ public class PowerPlantService {
         }
     }
 
-    public boolean delete(String powerPlantName){
-        PowerPlant powerPlant = powerPlantDao.findByPowerPlantName(powerPlantName);
+    public boolean update(PowerPlant powerPlant){
+        PowerPlant powerPlant1 = powerPlantDao.findByid(powerPlant.getPowerPlantID());
+        if(powerPlant1 == null){
+            return false;
+        }
+        powerPlant1 = powerPlant;
+        if (powerPlantDao.save(powerPlant1) != null){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean delete(Integer powerPlantID){
+        PowerPlant powerPlant = powerPlantDao.findByid(powerPlantID);
         if(powerPlant != null){
             powerPlant.setInfoState(1);
             return true;

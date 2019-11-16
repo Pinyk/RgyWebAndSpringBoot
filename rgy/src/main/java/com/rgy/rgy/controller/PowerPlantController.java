@@ -14,6 +14,7 @@ import java.util.List;
  * @Date: 11/12  00:19
  */
 
+@CrossOrigin
 @RestController
 @RequestMapping("/power")
 public class PowerPlantController {
@@ -21,7 +22,7 @@ public class PowerPlantController {
     PowerPlantService powerPlantService;
 
     /**
-     * 增加、修改电厂信息
+     * 增加电厂信息
      * @param powerPlant
      * @return
      */
@@ -35,13 +36,27 @@ public class PowerPlantController {
     }
 
     /**
-     *删除电厂信息
-     * @param powerPlantName
+     * 更新电厂信息
+     * @param powerPlant
+     * @return
+     */
+    @GetMapping("/update")
+    public Result pUpdate(@RequestBody PowerPlant powerPlant){
+        if(powerPlantService.update(powerPlant)){
+            return new Result("success","更新成功");
+        }else{
+            return new Result("error","更新失败");
+        }
+    }
+
+    /**
+     * 删除电厂
+     * @param powerPlantID
      * @return
      */
     @GetMapping("/delete")
-    public Result delete(@RequestParam String powerPlantName){
-        if(powerPlantService.delete(powerPlantName)){
+    public Result delete(@RequestParam Integer powerPlantID){
+        if(powerPlantService.delete(powerPlantID)){
             return new Result("success","删除成功");
         }else{
             return new Result("error","删除失败");
@@ -74,13 +89,15 @@ public class PowerPlantController {
     public Result findByCondition(@RequestParam String powerPlantName,
                                   @RequestParam String powerPlantType,
                                   @RequestParam String generatorCapacity,
-                                  @RequestParam String voltageLevel){
+                                  @RequestParam String voltageLevel) {
         List<PowerPlant> powerPlants = powerPlantService.findByCondition(powerPlantName,
-                powerPlantType,generatorCapacity,voltageLevel);
-        if(powerPlants != null){
-            return new Result("success","返回成功",powerPlants);
-        }else{
-            return new Result("error","返回失败");
+                powerPlantType, generatorCapacity, voltageLevel);
+        if (powerPlants != null) {
+            return new Result("success", "返回成功", powerPlants);
+        } else {
+            return new Result("error", "返回失败");
         }
     }
+
+
 }

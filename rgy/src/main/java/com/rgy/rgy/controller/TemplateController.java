@@ -13,6 +13,8 @@ import java.util.List;
  * @Author: gaoyk
  * @Date: 2019/10/30 21:38
  */
+
+@CrossOrigin
 @RestController
 @RequestMapping("/template")
 public class TemplateController {
@@ -33,7 +35,7 @@ public class TemplateController {
     }
 
     /**
-     * 新增/修改模板
+     * 新增模板
      * @param templateName
      * @param basis
      * @param equipmentTypeId
