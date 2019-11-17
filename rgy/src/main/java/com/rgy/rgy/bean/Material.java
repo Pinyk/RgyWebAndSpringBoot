@@ -2,6 +2,12 @@ package com.rgy.rgy.bean;
 
 import javax.persistence.*;
 
+
+/**
+ * @Author：AnZhuJun
+ * @Date: 2019/11/17 15:00
+ */
+
 //实验人员资料管理
 @Entity
 @Table(name = "material")
@@ -22,7 +28,14 @@ public class Material {
         this.materialUrl = materialUrl;
     }
 
+
+
     public Material() {
+    }
+
+    public Material(String materialName, String materialUrl) {
+        this.materialName = materialName;
+        this.materialUrl = materialUrl;
     }
 
     public int getMaterialID() {
