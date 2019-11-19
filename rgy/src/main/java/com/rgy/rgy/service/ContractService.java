@@ -44,8 +44,8 @@ public class ContractService {
         return contract.getContractId();
     }
 
-    public void cupdate(String contractNumber, String contractName, double contractAmount, String currency, String salesMan, String signYear, String signDate, String contractArea, String businessType, String overview, String contractText, String abnormalNote, String partyA, String partyAAddress, String partyALinkman, String partyAPhone, String partyAEmail, String partyB, String partyBLinkman, String partyBPhone, String partyBEmail, String executiveDept, String executiveStartDate, String executiveEndDate, String projectManager, String projectExecutive, String reportNumber, String reportUrl, String reportMailingDate, double lnvoiceAmount, String lnvoiceDate, String receiptDate, String mailingDate, String detailsNote, String receiverAddress, String receiverName, String receiverPhone, double paymentAmount, String paymentDate, double paybackBalance, String paymentNote){
-        contractDao.save(new Contract( contractNumber,  contractName,  contractAmount,  currency,  salesMan,  signYear, signDate,  contractArea,  businessType,  overview,  contractText,  abnormalNote,  partyA,  partyAAddress,  partyALinkman,  partyAPhone,  partyAEmail,  partyB,  partyBLinkman,  partyBPhone,  partyBEmail,  executiveDept,  executiveStartDate,  executiveEndDate,  projectManager,  projectExecutive,  reportNumber,  reportUrl,  reportMailingDate,  lnvoiceAmount,  lnvoiceDate, receiptDate,  mailingDate,  detailsNote,  receiverAddress,  receiverName,  receiverPhone,  paymentAmount,  paymentDate,  paybackBalance,paymentNote,0));
+    public void update(Contract contract){
+        contractDao.save(contract);
     }
 
     public Boolean cdel(int contractId){

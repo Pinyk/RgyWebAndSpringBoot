@@ -22,10 +22,18 @@ public class GuidingBookController {
     @Autowired
     GuidingBookService guidingBookService;
 
-    //添加,修改
+    //添加
     @PostMapping("/add")
     public Result add(@RequestBody GuidingBook guidingBook){
         guidingBookService.add(guidingBook);
+        return new Result("success","操作成功");
+    }
+
+    //修改
+    @PostMapping("/update")
+    public Result update(GuidingBook guidingBook){
+        guidingBook.setGuidingBookId(guidingBook.getGuidingBookId());
+        guidingBookService.update(guidingBook);
         return new Result("success","操作成功");
     }
 

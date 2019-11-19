@@ -20,7 +20,7 @@ public class ContractController {
     ContractService contractService;
 
     /**
-     * 新增/修改合同
+     * 新增合同
      * @return
      */
     @PostMapping("/add")
@@ -67,6 +67,12 @@ public class ContractController {
                        @RequestParam String paymentNote){
         int contractsId = contractService.cadd(contractNumber, contractName, contractAmount, currency, salesMan, signYear, signDate, contractArea, businessType, overview, contractText, abnormalNote, partyA, partyAAddress, partyALinkman, partyAPhone, partyAEmail, partyB, partyBLinkman, partyBPhone, partyBEmail, executiveDept, executiveStartDate, executiveEndDate, projectManager, projectExecutive, reportNumber, reportUrl, reportMailingDate, lnvoiceAmount, lnvoiceDate, receiptDate, mailingDate, detailsNote, receiverAddress, receiverName, receiverPhone, paymentAmount, paymentDate, paybackBalance, paymentNote);
         return new Result("success","新增成功",contractsId);
+    }
+
+    @PostMapping("/update")
+    public void update(Contract contract){
+        contract.setContractId(contract.getContractId());
+        contractService.update(contract);
     }
 
     /**

@@ -35,6 +35,10 @@ public class GuidingBookService {
         }
     }
 
+    public void update(GuidingBook guidingBook){
+        guidingBookDao.save(guidingBook);
+    }
+
     public GuidingBook findByName(String name){
         return guidingBookDao.findByGuidingBookName(name);
     }

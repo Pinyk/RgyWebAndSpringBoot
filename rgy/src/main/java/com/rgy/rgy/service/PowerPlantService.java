@@ -59,4 +59,8 @@ public class PowerPlantService {
         return powerPlantDao.findbyCondition(powerPlantName,
                 powerPlantType,generatorCapacity,voltageLevel);
     }
+
+    public List<PowerPlant> findByType(String powerPlantType) {
+        return powerPlantDao.findByPowerPlantType(powerPlantType);
+    }
 }

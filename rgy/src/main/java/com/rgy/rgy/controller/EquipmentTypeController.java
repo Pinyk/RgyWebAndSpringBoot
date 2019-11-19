@@ -13,6 +13,7 @@ import java.util.List;
  * @Author: gaoyk
  * @Date: 2019/10/27 11:15
  */
+
 @CrossOrigin
 @RestController
 @RequestMapping("/equipmentType")
@@ -73,6 +74,11 @@ public class EquipmentTypeController {
         }
     }
 
+    /**
+     * 删除设备类型
+     * @param equipmentTypeID
+     * @return
+     */
     @DeleteMapping("/delete")
     public Result delete(@RequestParam Integer equipmentTypeID){
         if(equipmentTypeService.delete(equipmentTypeID)){

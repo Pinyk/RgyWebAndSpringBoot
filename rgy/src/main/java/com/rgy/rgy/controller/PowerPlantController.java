@@ -70,7 +70,7 @@ public class PowerPlantController {
     @GetMapping("/findall")
     public Result findAll(){
         List<PowerPlant> powerPlants = powerPlantService.findAll();
-        if(powerPlants != null){
+        if(powerPlants != null && !powerPlants.isEmpty()){
             return new Result("success","返回成功",powerPlants);
         }else{
             return new Result("error","返回失败");
@@ -92,12 +92,30 @@ public class PowerPlantController {
                                   @RequestParam String voltageLevel) {
         List<PowerPlant> powerPlants = powerPlantService.findByCondition(powerPlantName,
                 powerPlantType, generatorCapacity, voltageLevel);
-        if (powerPlants != null) {
+        if (powerPlants != null && !powerPlants.isEmpty()) {
             return new Result("success", "返回成功", powerPlants);
         } else {
             return new Result("error", "返回失败");
         }
     }
 
+    /**
+     * 根据类型查找电厂
+     * @param powerPlantType
+     * @return
+     */
+    @GetMapping("/findByType")
+    public Result findByType(@RequestParam String powerPlantType){
+        List<PowerPlant> powerPlants = powerPlantService.findByType(powerPlantType);
+        if (powerPlants != null && !powerPlants.isEmpty()) {
+            return new Result("success", "返回成功", powerPlants);
+        } else {
+            return new Result("error", "返回失败");
+        }
+    }
 
+//    @GetMapping("/returnType")
+//    public Result returnType(){
+//
+//    }
 }

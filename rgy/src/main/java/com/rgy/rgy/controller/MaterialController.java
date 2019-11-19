@@ -19,9 +19,21 @@ public class MaterialController {
     @Autowired
     MaterialService materialService;
 
-    //修改,添加
+    /**
+     * 新增
+      * @param material
+     * @return
+     */
     @PostMapping("/add")
     public Result add(@RequestBody Material material){
+        materialService.update(material);
+        return new Result("success","操作成功");
+    }
+
+    //修改
+    @PostMapping("/update")
+    public Result update(Material material){
+        material.setMaterialID(material.getMaterialID());
         materialService.update(material);
         return new Result("success","操作成功");
     }

@@ -1,0 +1,2 @@
+webpackJsonp([7],{rhMZ:function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r={render:function(){this.$createElement;this._self._c;return this._m(0)},staticRenderFns:[function(){var t=this.$createElement,e=this._self._c||t;return e("div",{attrs:{id:"app"}},[e("h2",[this._v("实验管理")])])}]};var i=n("VU/8")({name:"shiyan",data:function(){return{}}},r,!1,function(t){n("tUHm")},"data-v-2166f67c",null);e.default=i.exports},tUHm:function(t,e){}});
+//# sourceMappingURL=7.4118fbab10819d9c0ab4.js.map
