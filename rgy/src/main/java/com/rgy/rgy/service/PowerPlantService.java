@@ -44,6 +44,7 @@ public class PowerPlantService {
         PowerPlant powerPlant = powerPlantDao.findByid(powerPlantID);
         if(powerPlant != null){
             powerPlant.setInfoState(1);
+            powerPlantDao.save(powerPlant);
             return true;
         }else{
             return false;

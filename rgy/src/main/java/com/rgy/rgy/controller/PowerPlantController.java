@@ -86,10 +86,10 @@ public class PowerPlantController {
      * @return
      */
     @GetMapping("/findcondition")
-    public Result findByCondition(@RequestParam String powerPlantName,
-                                  @RequestParam String powerPlantType,
-                                  @RequestParam String generatorCapacity,
-                                  @RequestParam String voltageLevel) {
+    public Result findByCondition(@RequestParam(required = false) String powerPlantName,
+                                  @RequestParam(required = false) String powerPlantType,
+                                  @RequestParam(required = false) String generatorCapacity,
+                                  @RequestParam(required = false) String voltageLevel) {
         List<PowerPlant> powerPlants = powerPlantService.findByCondition(powerPlantName,
                 powerPlantType, generatorCapacity, voltageLevel);
         if (powerPlants != null && !powerPlants.isEmpty()) {
@@ -114,8 +114,4 @@ public class PowerPlantController {
         }
     }
 
-//    @GetMapping("/returnType")
-//    public Result returnType(){
-//
-//    }
 }
