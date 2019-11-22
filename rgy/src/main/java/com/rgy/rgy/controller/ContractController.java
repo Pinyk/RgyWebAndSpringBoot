@@ -23,80 +23,45 @@ public class ContractController {
      * 新增合同
      * @return
      */
-    @PostMapping("/add")
-    public Result cadd(@RequestParam String contractNumber,
-                       @RequestParam String contractName,
-                       @RequestParam double contractAmount,
-                       @RequestParam String currency,
-                       @RequestParam String salesMan,
-                       @RequestParam String signYear,
-                       @RequestParam String signDate,
-                       @RequestParam String contractArea,
-                       @RequestParam String businessType,
-                       @RequestParam String overview,
-                       @RequestParam String contractText,
-                       @RequestParam String abnormalNote,
-                       @RequestParam String partyA,
-                       @RequestParam String partyAAddress,
-                       @RequestParam String partyALinkman,
-                       @RequestParam String partyAPhone,
-                       @RequestParam String partyAEmail,
-                       @RequestParam String partyB,
-                       @RequestParam String partyBLinkman,
-                       @RequestParam String partyBPhone,
-                       @RequestParam String partyBEmail,
-                       @RequestParam String executiveDept,
-                       @RequestParam String executiveStartDate,
-                       @RequestParam String executiveEndDate,
-                       @RequestParam String projectManager,
-                       @RequestParam String projectExecutive,
-                       @RequestParam String reportNumber,
-                       @RequestParam String reportUrl,
-                       @RequestParam String reportMailingDate,
-                       @RequestParam double lnvoiceAmount,
-                       @RequestParam String lnvoiceDate,
-                       @RequestParam String receiptDate,
-                       @RequestParam String mailingDate,
-                       @RequestParam String detailsNote,
-                       @RequestParam String receiverAddress,
-                       @RequestParam String receiverName,
-                       @RequestParam String receiverPhone,
-                       @RequestParam double paymentAmount,
-                       @RequestParam String paymentDate,
-                       @RequestParam double paybackBalance,
-                       @RequestParam String paymentNote){
-        int contractsId = contractService.cadd(contractNumber, contractName, contractAmount, currency, salesMan, signYear, signDate, contractArea, businessType, overview, contractText, abnormalNote, partyA, partyAAddress, partyALinkman, partyAPhone, partyAEmail, partyB, partyBLinkman, partyBPhone, partyBEmail, executiveDept, executiveStartDate, executiveEndDate, projectManager, projectExecutive, reportNumber, reportUrl, reportMailingDate, lnvoiceAmount, lnvoiceDate, receiptDate, mailingDate, detailsNote, receiverAddress, receiverName, receiverPhone, paymentAmount, paymentDate, paybackBalance, paymentNote);
-        return new Result("success","新增成功",contractsId);
+    @GetMapping("/add")
+    public Result add(@RequestBody Contract contract) {
+        if (contractService.add( contract )) {
+            return new Result( "success", "添加成功" );
+        } else {
+            return new Result( "error", "添加失败" );
+        }
     }
 
     @PostMapping("/update")
-    public void update(Contract contract){
-        contract.setContractId(contract.getContractId());
-        contractService.update(contract);
+    public Result update(@RequestBody Contract contract){
+        if (contractService.update( contract )) {
+            return new Result("success","更新成功");
+        } else {
+            return new Result("error","更新失败");
+        }
     }
 
     /**
      * 返回所有合同
      * @return
      */
-    @GetMapping("/creturn")
-    public Result creturnAll(){
+    @GetMapping("/findAll")
+    public Result findAll(){
         List<Contract> contracts = contractService.findAll();
-        if(contracts!=null){
+        if(contracts != null && !contracts.isEmpty()){
             return new Result("success","返回成功",contracts);
         }else{
             return new Result("error","返回失败");
         }
     }
-
     /**
      * 删除合同
      * @param contractId
      * @return
      */
     @GetMapping("/delete")
-    public Result cdel(@RequestBody int contractId){
-        if(contractService.cdel(contractId)){
+    public Result delete(@RequestParam int contractId){
+        if(contractService.delete(contractId)){
             return new Result("success","删除成功");
         }else{
             return new Result("error","删除失败");
@@ -105,41 +70,39 @@ public class ContractController {
 
     /**
      * 通过合同名查找合同
-     */
+
     @GetMapping("/findbyName")
     public Result find(@RequestParam String contractName){
         List<Contract> contract = contractService.findContractByContractName(contractName);
-        if(contract!=null){
+        if(contract!=null && !contract.isEmpty()){
             return new Result("success","查找成功",contract);
         }else{
             return new Result("error","查找失败");
         }
     }
+    */
 
     /**
      * 通过综合条件查找合同
      */
     @GetMapping("/findcondition")
-    public Result findByCondition(@RequestParam String contractName,
-                                  @RequestParam String partyA,
-                                  @RequestParam String partyB,
-                                  @RequestParam String SalesMan,
-                                  @RequestParam String ProjectManager,
-                                  @RequestParam String SignDate,
-                                  @RequestParam String ExecutiveStartDate,
-                                  @RequestParam String ExecutiveEndDate){
-        Contract contract =
-                contractService.findContractByContractNameAndPartyAAndPartyBAndSalesManAndProjectManagerAndSignDateAndExecutiveStartDateAndExecutiveEndDate(
-                contractName,
-                partyA,
-                partyB,
-                SalesMan,
-                ProjectManager,
-                SignDate,
-                ExecutiveStartDate,
-                ExecutiveEndDate);
-        if(contract != null){
-            return new Result("success","返回成功",contract);
+    public Result findByCondition(@RequestParam(required = false) String contractName,
+                                  @RequestParam(required = false) Integer infoState,
+                                  @RequestParam(required = false) String businessType,
+                                  @RequestParam(required = false) String partyA,
+                                  @RequestParam(required = false) String partyB,
+                                  @RequestParam(required = false) String projectManager,
+                                  @RequestParam(required = false) String salesMan,
+                                  @RequestParam(required = false) String signDate,
+                                  @RequestParam(required = false) String executiveStartDate,
+                                  @RequestParam(required = false) String executiveEndDate){
+
+        List<Contract> contracts = contractService.findByCondition( contractName, infoState, businessType,
+                partyA, partyB, projectManager, salesMan, signDate,executiveStartDate,
+                executiveEndDate );
+
+        if(contracts != null && !contracts.isEmpty()){
+            return new Result("success","返回成功",contracts);
         }else{
             return new Result("error","返回失败");
         }

@@ -8,7 +8,9 @@ package com.rgy.rgy.dao;
 import com.rgy.rgy.bean.GuidingBook;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface GuidingBookDao extends JpaRepository<GuidingBook,Integer> {
     GuidingBook findByGuidingBookId(int id);
-    GuidingBook findByGuidingBookName(String name);
+    List<GuidingBook> findByGuidingBookName(String name);
 }

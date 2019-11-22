@@ -23,7 +23,7 @@ public class Project {
     private String projectName;
 
     @Column
-    private String projecType;
+    private String projectType;
 
     @Column
     private String projectGroup;
@@ -58,6 +58,7 @@ public class Project {
     @Column
     private double d50MWBelowPrice;
 
-
+    @Column
+    private Integer infoState;
 
 }

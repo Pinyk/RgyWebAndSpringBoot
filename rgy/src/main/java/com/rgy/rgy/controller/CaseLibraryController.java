@@ -20,12 +20,17 @@ public class CaseLibraryController {
     CaseLibraryService caseLibraryService;
 
     /**
-     * 查询所有
+     * 查询所有案例信息
      * @return
      */
-    @RequestMapping("/findAll")
-    public List<CaseLibrary> findAll(){
-        return caseLibraryService.findAll();
+    @GetMapping("/findall")
+    public Result findAll(){
+        List<CaseLibrary> caseLibraries = caseLibraryService.findAll();
+        if (caseLibraries != null && !caseLibraries.isEmpty()){
+            return new Result("success","返回成功",caseLibraries);
+        }else{
+            return new Result("error","返回失败");
+        }
     }
 
     /**
@@ -33,17 +38,22 @@ public class CaseLibraryController {
      * @param keyword
      * @return
      */
-    @RequestMapping("/findByKeywordLike/{keyword}")
-    public List<CaseLibrary> findByKeywordLike(@PathVariable (name = "keyword") String keyword){
-        return caseLibraryService.findByKeywordLike(keyword);
+    @GetMapping("/findByKeywordLike")
+    public Result findByKeywordLike(@RequestParam(required = false) String keyword){
+         List<CaseLibrary> caseLibraries =caseLibraryService.findByKeywordLike(keyword);
+         if (caseLibraries != null && !caseLibraries.isEmpty()){
+             return new Result("success","返回成功",caseLibraries);
+         }else{
+             return new Result("error","返回失败");
+         }
     }
 
     /**
-     * 新增
+     * 新增案例信息
      * @param caseLibrary
      * @return
      */
-    @RequestMapping("/add")
+    @PostMapping("/add")
     public Result add(@RequestBody CaseLibrary caseLibrary){
         if ( caseLibraryService.add(caseLibrary)){
             return new Result("success","添加成功");
@@ -54,11 +64,11 @@ public class CaseLibraryController {
     }
 
     /**
-     * 更新
+     * 更新案例信息
      * @param caseLibrary
      * @return
      */
-    @RequestMapping("/update")
+    @GetMapping("/update")
     public Result update(@RequestBody CaseLibrary caseLibrary){
         if ( caseLibraryService.update(caseLibrary)){
             return new Result("success","更新成功");
@@ -71,12 +81,12 @@ public class CaseLibraryController {
 
     /**
      * 根据id删除
-     * @param id
+     * @param caseLibraryID
      * @return
      */
-    @RequestMapping("/delete/{id}")
-    public Result delete(@PathVariable(name = "id") int id){
-        if (caseLibraryService.delete(id)){
+    @GetMapping("/delete")
+    public Result delete(@RequestParam Integer caseLibraryID){
+        if (caseLibraryService.delete(caseLibraryID)){
             return new Result("success","删除成功");
         }
         else

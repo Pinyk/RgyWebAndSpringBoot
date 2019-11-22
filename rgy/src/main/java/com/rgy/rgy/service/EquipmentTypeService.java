@@ -53,6 +53,7 @@ public class EquipmentTypeService {
         EquipmentType equipmentType = equipmentTypeDao.findByEquipmentTypeID(equipmentTypeID);
         if(equipmentType != null){
             equipmentType.setInfoState(1);
+            equipmentTypeDao.save(equipmentType);
             return true;
         }else{
             return false;

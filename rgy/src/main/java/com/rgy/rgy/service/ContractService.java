@@ -25,33 +25,44 @@ public class ContractService {
         return contractDao.findContractByContractName(contractName);
     }
 
-    public Contract findContractByContractNameAndPartyAAndPartyBAndSalesManAndProjectManagerAndSignDateAndExecutiveStartDateAndExecutiveEndDate(String contractName,String partyA,String partyB,String SalesMan,String ProjectManager,String SignDate,String ExecutiveStartDate,String ExecutiveEndDate){
-        return contractDao.findContractByContractNameAndPartyAAndPartyBAndSalesManAndProjectManagerAndSignDateAndExecutiveStartDateAndExecutiveEndDate(contractName, partyA, partyB, SalesMan, ProjectManager, SignDate, ExecutiveStartDate, ExecutiveEndDate);
-    }
 
-    public int cadd(String contractNumber, String contractName, double contractAmount, String currency, String salesMan, String signYear, String signDate, String contractArea, String businessType, String overview, String contractText, String abnormalNote, String partyA, String partyAAddress, String partyALinkman, String partyAPhone, String partyAEmail, String partyB, String partyBLinkman, String partyBPhone, String partyBEmail, String executiveDept, String executiveStartDate, String executiveEndDate, String projectManager, String projectExecutive, String reportNumber, String reportUrl, String reportMailingDate, double lnvoiceAmount, String lnvoiceDate, String receiptDate, String mailingDate, String detailsNote, String receiverAddress, String receiverName, String receiverPhone, double paymentAmount, String paymentDate, double paybackBalance, String paymentNote){
-        int infoState = 0;
-        contractDao.save(new Contract( contractNumber,  contractName,  contractAmount,  currency,  salesMan,  signYear, signDate,  contractArea,  businessType,  overview,  contractText,  abnormalNote,  partyA,  partyAAddress,  partyALinkman,  partyAPhone,  partyAEmail,  partyB,  partyBLinkman,  partyBPhone,  partyBEmail,  executiveDept,  executiveStartDate,  executiveEndDate,  projectManager,  projectExecutive,  reportNumber,  reportUrl,  reportMailingDate,  lnvoiceAmount,  lnvoiceDate, receiptDate,  mailingDate,  detailsNote,  receiverAddress,  receiverName,  receiverPhone,  paymentAmount,  paymentDate,  paybackBalance,paymentNote,0));
-        Contract contract = contractDao.findContractByContractNameAndPartyAAndPartyBAndSalesManAndProjectManagerAndSignDateAndExecutiveStartDateAndExecutiveEndDate(
-                contractName,
-                partyA,
-                partyB,
-                salesMan,
-                projectManager,
-                signDate,
-                executiveStartDate,
+    public List<Contract> findByCondition(String contractName,Integer infoState,
+                                          String businessType,
+                                          String partyA,String partyB,
+                                          String projectManager,String salesMan,
+                                          String signDate,String executiveStartDate,
+                                          String executiveEndDate) {
+        return contractDao.findByCondition(contractName, infoState, businessType,
+                partyA, partyB, projectManager, salesMan, signDate,executiveStartDate,
                 executiveEndDate);
-        return contract.getContractId();
+
     }
 
-    public void update(Contract contract){
-        contractDao.save(contract);
+
+    public boolean add(Contract contract){
+        contract.setInfoState( 0 );
+        Contract contract1 = contractDao.save( contract );
+        if (contract1 != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public Boolean cdel(int contractId){
+    public boolean update(Contract contract){
+        Contract contract1 = contractDao.findByContractId( contract.getContractId() );
+        if (contract1 != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Boolean delete(int contractId){
         Contract contract = contractDao.findByContractId(contractId);
-        if(contract!=null){
+        if(contract != null){
             contract.setInfoState(1);
+            contractDao.save( contract );
             return true;
         }else {
             return false;

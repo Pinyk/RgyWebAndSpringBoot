@@ -14,5 +14,5 @@ public interface CaseLibraryDao extends JpaRepository<CaseLibrary,Integer> {
 //    List<CaseLibrary> findAll();
 
     CaseLibrary findByCaseLibraryID(int id);
-    boolean deleteByKeyword(int id); //根据id删除
+
 }

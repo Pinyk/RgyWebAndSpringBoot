@@ -28,10 +28,10 @@ public class CaseLibraryService {
     }
 
 
-    public boolean delete(int id){
+    public boolean delete(Integer id){
         CaseLibrary caseLibrary = caseLibraryDao.findByCaseLibraryID(id);
         if(caseLibrary != null) {
-            caseLibraryDao.deleteByKeyword(id);
+            caseLibraryDao.deleteById(id);
             return true;
         }
         return false;

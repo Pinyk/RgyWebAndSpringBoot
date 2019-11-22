@@ -2,6 +2,7 @@ package com.rgy.rgy.dao;
 
 import com.rgy.rgy.bean.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -13,4 +14,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoleDao extends JpaRepository<Role, Integer> {
     Role findByRoleName(String name);
+    Role findByRoleId(Integer roldId);
 }

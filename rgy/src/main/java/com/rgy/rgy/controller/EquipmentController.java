@@ -21,15 +21,31 @@ public class EquipmentController {
     EquipmentService equipmentService;
 
     /**
-     * 新增、修改设备
-     * 暂时传递对象，电厂字段暂时没有
+     * 新增设备信息
      * @param equipment
      * @return
      */
     @PostMapping("/add")
     public Result add(@RequestBody Equipment equipment){
-        equipmentService.add(equipment);
-        return new Result("success","操作成功");
+        if(equipmentService.add(equipment)){
+            return new Result("success","新增成功");
+        }else{
+            return new Result("error","新增失败");
+        }
+    }
+
+    /**
+     * 修改设备信息
+     * @param equipment
+     * @return
+     */
+    @PostMapping("/update")
+    public Result update(@RequestBody Equipment equipment){
+        if(equipmentService.update(equipment)){
+            return new Result("success","修改成功");
+        }else{
+            return new Result("error","修改失败");
+        }
     }
 
     /**
@@ -39,7 +55,7 @@ public class EquipmentController {
     @GetMapping("/findAll")
     public Result findAll(){
         List<Equipment> equipment = equipmentService.findALl();
-        if(equipment!=null){
+        if(equipment!=null && !equipment.isEmpty()){
             return new Result("success","返回成功",equipment);
         }else{
             return new Result("error","返回失败");
@@ -63,6 +79,35 @@ public class EquipmentController {
             return new Result("success","查找成功",equipment);
         }else{
             return new Result("error","查找失败");
+        }
+    }
+
+    /**
+     * 根据电厂ID查找设备
+     * @param powerPlantID
+     * @return
+     */
+    @GetMapping("/findByPowerPlanID")
+    public Result findByPowerPlantId(@RequestParam Integer powerPlantID){
+        List<Equipment> equipment = equipmentService.findByPowerPlantId(powerPlantID);
+        if(equipment != null && !equipment.isEmpty()){
+            return new Result("success","返回成功",equipment);
+        }else{
+            return new Result("error","返回失败");
+        }
+    }
+
+    /**
+     * 删除设备信息
+     * @param equipmentId
+     * @return
+     */
+    @GetMapping("/delete")
+    public Result delete(@RequestParam Integer equipmentId){
+        if(equipmentService.delete(equipmentId)){
+            return new Result("success","删除成功");
+        }else{
+            return new Result("error","删除失败");
         }
     }
 }

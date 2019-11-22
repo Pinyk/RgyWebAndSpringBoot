@@ -13,4 +13,8 @@ public interface EquipmentDao extends JpaRepository<Equipment,Integer> {
     @Query(value = "select * from equipment where if(?1 !='',equipment_name=?1,1=1) and if(?2 !='',equipment_typeid=?2,1=1)" +
             "and if(?3 !='',voltage_level=?3,1=1)  ",nativeQuery = true)
     List<Equipment> findbyCondition(String X1, String X2, String X3);
+
+    List<Equipment> findByPowerPlantID(Integer powerPlantID);
+
+    Equipment findByEquipmentId(Integer equipmentId);
 }

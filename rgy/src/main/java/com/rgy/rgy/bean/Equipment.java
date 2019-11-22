@@ -12,12 +12,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Setter
 @Getter
-
 @Entity
 @Table(name = "equipment")
 public class Equipment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer equipmentId;
 
     @Column
@@ -46,6 +45,9 @@ public class Equipment {
 
     @Column
     private String remarks;
+
+    @Column
+    private Integer powerPlantID;
 
     @Column
     private Integer infoState;

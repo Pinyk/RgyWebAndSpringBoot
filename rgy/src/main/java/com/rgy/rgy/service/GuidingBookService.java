@@ -21,25 +21,40 @@ public class GuidingBookService {
         return guidingBookDao.findAll();
     }
 
-    public void add(GuidingBook guidingBook){
-        guidingBookDao.save(guidingBook);
+    public boolean add(GuidingBook guidingBook){
+        guidingBook.setInfoState(0);
+        GuidingBook guidingBook1 = guidingBookDao.save(guidingBook);
+        if (guidingBook1 != null){
+            return true;
+        }else{
+            return false;
+        }
     }
 
-    public Boolean gdel(int guidingBookId){
+    public Boolean delete(int guidingBookId){
         GuidingBook guidingBook = guidingBookDao.findByGuidingBookId(guidingBookId);
         if(guidingBook!=null){
             guidingBook.setInfoState(1);
+            guidingBookDao.save(guidingBook);
             return true;
         }else {
             return false;
         }
     }
 
-    public void update(GuidingBook guidingBook){
-        guidingBookDao.save(guidingBook);
+    public boolean update(GuidingBook guidingBook){
+        GuidingBook guidingBook1 = guidingBookDao.findByGuidingBookId(guidingBook.getGuidingBookId());
+        if (guidingBook1 == null)
+            return false;
+        guidingBook1 = guidingBook;
+        if (guidingBookDao.save(guidingBook1) != null){
+            return true;
+        }else {
+            return false;
+        }
     }
 
-    public GuidingBook findByName(String name){
+    public List<GuidingBook> findByName(String name){
         return guidingBookDao.findByGuidingBookName(name);
     }
 }

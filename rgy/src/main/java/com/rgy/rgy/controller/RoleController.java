@@ -1,14 +1,10 @@
 package com.rgy.rgy.controller;
 
-
 import com.rgy.rgy.bean.Result;
 import com.rgy.rgy.bean.Role;
 import com.rgy.rgy.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,16 +33,15 @@ public class RoleController {
         } else {
             return new Result( "error","查询失败" );
         }
-
     }
     /**
      * 查询所有角色
      * @return
      */
-    @GetMapping("/getAll")
-    public Result getAll() {
+    @GetMapping("/findAll")
+    public Result findAll() {
         List<Role> roles = roleService.findAll();
-        if (roles != null) {
+        if (roles != null && !roles.isEmpty()) {
             return new Result( "success","查询成功", roles );
         }else {
             return new Result( "error","查询失败" );
@@ -58,10 +53,14 @@ public class RoleController {
      * @param role
      * @return
      */
-    @GetMapping("/updateRole")
+    @GetMapping("/update")
     public Result updateRole( Role role ) {
-        roleService.update( role );
-        return new Result( "success", "修改成功");
+        if (roleService.update( role )) {
+            return new Result( "success", "修改成功");
+        } else {
+            return new Result( "error", "修改失败");
+        }
+
     }
 
     /**
@@ -69,10 +68,14 @@ public class RoleController {
      * @param role
      * @return
      */
-    @GetMapping("/saveRole")
+    @PostMapping("/add")
     public Result saveRole( Role role ) {
-        roleService.update( role );
-        return new Result( "success", "保存成功");
+        if ( roleService.update( role ) ) {
+            return new Result( "success", "新增成功");
+        } else {
+            return new Result( "error", "新增失败");
+        }
+
     }
 
     /**
@@ -80,7 +83,7 @@ public class RoleController {
      * @param id
      * @return
      */
-    @GetMapping("/deleteRole")
+    @GetMapping("/delete")
     public Result deleteRole( int id ) {
         if (roleService.delete( id )) {
             return new Result( "success", "删除成功" );

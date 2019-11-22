@@ -19,52 +19,43 @@ public class RoleService {
     @Autowired
     RoleDao roleDao;
 
-    /**
-     * 根据名称查询角色
-     * @param name
-     * @return
-     */
     public Role findByName(String name) {
         return roleDao.findByRoleName( name );
     }
 
-    /**
-     * 查询所有角色
-     * @return
-     */
     public List<Role> findAll() {
         return roleDao.findAll();
     }
 
-    /**
-     * 修改角色信息
-     * @param role
-     */
-    public void update(Role role) {
-        roleDao.save( role );
+    public boolean update(Role role) {
+        Role role1 = roleDao.findByRoleId( role.getRoleId() );
+        if (role1 == null) {
+            return false;
+        }
+        role1 = role;
+        if (roleDao.save( role1 ) != null) {
+            return true;
+        }
+        return false;
     }
 
-    /**
-     * 保存角色信息
-     * @param role
-     */
-    public void save(Role role) {
-        roleDao.save( role );
+    public boolean add(Role role) {
+        role.setInfoState( 0 );
+        Role role1 = roleDao.save( role );
+        if (role1 != null) {
+            return true;
+        }
+        return false;
     }
 
-    /**
-     * 删除角色
-     * @param id
-     * @return
-     */
-    public boolean delete(int id) {
-        Role current = roleDao.findById( id ).orElse( new Role( -1,"null", "null", 0) );
-        if (current.getRoleId() > -1) {
-            current.setInfoState( 1 );
+    public boolean delete(Integer roleId) {
+        Role role = roleDao.findByRoleId( roleId );
+        if (role != null) {
+            role.setInfoState( 1 );
+            roleDao.save( role );
             return true;
         } else {
             return false;
         }
     }
-
 }
