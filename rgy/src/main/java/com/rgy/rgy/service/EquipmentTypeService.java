@@ -30,7 +30,7 @@ public class EquipmentTypeService {
         }
     }
 
-    public EquipmentType find(String equipmentTypeName){
+    public List<EquipmentType> find(String equipmentTypeName){
         return equipmentTypeDao.findByEquipmentTypeName(equipmentTypeName);
     }
 
@@ -40,6 +40,7 @@ public class EquipmentTypeService {
         if(equipmentType1 == null){
             return false;
         }
+        equipmentType.setInfoState(0);
         equipmentType1 = equipmentType;
         if(equipmentTypeDao.save(equipmentType1) != null){
             equipmentTypeDao.findByEquipmentTypeID(equipmentType1.getEquipmentTypeID()).setInfoState(0);

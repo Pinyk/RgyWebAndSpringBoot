@@ -18,6 +18,7 @@ public class EquipmentService{
     EquipmentDao equipmentDao;
 
     public Boolean add(Equipment equipment) {
+        equipment.setInfoState(0);
         Equipment equipment1 = equipmentDao.save(equipment);
         if(equipment1 != null){
             return true;

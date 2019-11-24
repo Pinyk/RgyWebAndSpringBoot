@@ -61,13 +61,13 @@ public class EquipmentTypeController {
 
     /**
      * 根据设备类型名查找
-     * @param equipmentTypeName
+     * @param equipmentTypeNames
      * @return
      */
     @GetMapping("/findbyName")
-    public Result find(@RequestParam String equipmentTypeName){
-        EquipmentType equipmentType = equipmentTypeService.find(equipmentTypeName);
-        if(equipmentType!=null){
+    public Result find(@RequestParam(required = false) String equipmentTypeNames){
+        List<EquipmentType> equipmentType = equipmentTypeService.find(equipmentTypeNames);
+        if(equipmentType!=null && !equipmentType.isEmpty()){
             return new Result("success","查找成功",equipmentType);
         }else{
             return new Result("error","查找失败");
@@ -79,7 +79,7 @@ public class EquipmentTypeController {
      * @param equipmentTypeID
      * @return
      */
-    @DeleteMapping("/delete")
+    @GetMapping("/delete")
     public Result delete(@RequestParam Integer equipmentTypeID){
         if(equipmentTypeService.delete(equipmentTypeID)){
             return new Result("success","删除成功");

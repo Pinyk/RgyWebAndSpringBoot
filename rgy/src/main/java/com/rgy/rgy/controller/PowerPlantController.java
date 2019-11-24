@@ -79,19 +79,19 @@ public class PowerPlantController {
 
     /**
      * 条件组合查询
-     * @param powerPlantName
-     * @param powerPlantType
-     * @param generatorCapacity
-     * @param voltageLevel
+     * @param powerPlantNames
+     * @param powerPlantTypes
+     * @param generatorCapacitys
+     * @param voltageLevels
      * @return
      */
     @GetMapping("/findcondition")
-    public Result findByCondition(@RequestParam(required = false) String powerPlantName,
-                                  @RequestParam(required = false) String powerPlantType,
-                                  @RequestParam(required = false) String generatorCapacity,
-                                  @RequestParam(required = false) String voltageLevel) {
-        List<PowerPlant> powerPlants = powerPlantService.findByCondition(powerPlantName,
-                powerPlantType, generatorCapacity, voltageLevel);
+    public Result findByCondition(@RequestParam(required = false) String powerPlantNames,
+                                  @RequestParam(required = false) String powerPlantTypes,
+                                  @RequestParam(required = false) String generatorCapacitys,
+                                  @RequestParam(required = false) String voltageLevels) {
+        List<PowerPlant> powerPlants = powerPlantService.findByCondition(powerPlantNames,
+                powerPlantTypes, generatorCapacitys, voltageLevels);
         if (powerPlants != null && !powerPlants.isEmpty()) {
             return new Result("success", "返回成功", powerPlants);
         } else {
