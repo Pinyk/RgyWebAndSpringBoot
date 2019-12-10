@@ -38,7 +38,7 @@ public class FileUploadController {
         String fileName = file.getOriginalFilename();
         int size = (int) file.getSize();
         System.out.println(fileName + "-->" + size);
-        String path = "F:\\热工院项目\\rgy-master\\rgy-master\\src\\main\\resources\\files" ;
+        String path = "F:\\热工院项目\\rgy-master\\rgy-master\\src\\main\\resources\\guidingbookfiles" ;
         File dest = new File(path + "/" + fileName);
         if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
             dest.getParentFile().mkdir();
@@ -77,7 +77,7 @@ public class FileUploadController {
             return "false";
         }
 
-        String path = "F:\\热工院项目\\rgy-master\\rgy-master\\src\\main\\resources\\files" ;
+        String path = "F:\\热工院项目\\rgy-master\\rgy-master\\src\\main\\resources\\guidingbookfiles" ;
 
         for(MultipartFile file:files){
             String fileName = file.getOriginalFilename();

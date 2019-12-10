@@ -4,6 +4,8 @@ import com.rgy.rgy.bean.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 用户Dao层
  * @Author: Silvia
@@ -12,5 +14,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserDao extends JpaRepository<User, Integer> {
-    User findByUserName(String name);
+    User findByUserId(Integer id);
+    List<User> findByUsernameLike(String userName);
+    User findByUsername(String userName);
 }

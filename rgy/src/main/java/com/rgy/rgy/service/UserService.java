@@ -1,11 +1,13 @@
 package com.rgy.rgy.service;
 
+import com.rgy.rgy.bean.Role;
 import com.rgy.rgy.bean.User;
+import com.rgy.rgy.dao.RoleDao;
 import com.rgy.rgy.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * 用户服务
@@ -15,23 +17,19 @@ import java.util.List;
 
 @Service
 public class UserService {
+
     @Autowired
     UserDao userDao;
+    @Autowired
+    RoleDao roleDao;
 
-    /**
-     * 用户登录
-     * @param name
-     * @param password
-     * @return
-     */
     public boolean login(String name, String password) {
-
-        User user = userDao.findByUserName( name );
-        if (user.getUserName() == null) {
+        User user = userDao.findByUsername( name );
+        if (user.getUsername() == null) {
             return false;
         }
 
-        String userName = user.getUserName();
+        String userName = user.getUsername();
         String userPassword = user.getPassword();
 
         if (name.equals(userName) && password.equals(userPassword)) {
@@ -41,46 +39,65 @@ public class UserService {
         }
     }
 
-    /**
-     * 根据姓名查询用户
-     * @param name
-     * @return
-     */
-    public User findByName(String name){
-        return userDao.findByUserName( name );
+    public List<User> findByNameLike(String userName) {
+        List<User> users = userDao.findByUsernameLike( "%" + userName + "%" );
+        for (User user : users) {
+            Role role = roleDao.findByRoleId( (Integer.valueOf( user.getRoleId() )) );
+            if (role != null && role.getRoleName() != null) {
+                user.setRoleId( role.getRoleName() );
+            }
+        }
+        return users;
     }
 
-    /**
-     * 修改用户信息
-     * @param user
-     */
-    public void update(User user) {
-        userDao.save( user );
+    public List<User> findAll() {
+        List<User> all = userDao.findAll();
+        for (User user :all) {
+            Role role = roleDao.findByRoleId( (Integer.valueOf( user.getRoleId() )) );
+            if (role != null && role.getRoleName() != null)
+                user.setRoleId( role.getRoleName() );
+        }
+        return all;
     }
 
-    /**
-     * 查询所有用户
-     * @return
-     */
-    public List<User> findAll(){
-        return userDao.findAll();
+    public boolean update(User user) {
+        User user1 = userDao.findByUserId( user.getUserId() );
+        if (user1 == null) {
+            return false;
+        }
+        user1 = user;
+        user1.setInfoState( 0 );
+        Role role = roleDao.findByRoleName( user1.getRoleId() );
+        if (role != null && role.getRoleName() != null) {
+            user1.setRoleId( role.getRoleName() );
+        }
+
+        if (userDao.save( user1 ) != null) {
+            return true;
+        }
+        return false;
     }
 
-    /**
-     * 删除用户
-     * @param id
-     * @return
-     */
-    public boolean delete(int id) {
-        User current = userDao.findById( id ).orElse( new User(-1,"null","null","null","null",-1, 0) );
+    public boolean add(User user) {
+        user.setInfoState( 0 );
+        User user1 = userDao.save( user );
 
-        if (current.getUserId() > -1) {
-            current.setInfoState( 1 );
-            userDao.save( current );
+        if (user1 != null) {
             return true;
         } else {
             return false;
         }
     }
 
+    public boolean delete(Integer id) {
+
+        User user = userDao.findByUserId( id );
+        if (user != null) {
+            user.setInfoState( 1 );
+            userDao.save( user );
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

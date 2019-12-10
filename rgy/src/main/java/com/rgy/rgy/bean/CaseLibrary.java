@@ -14,12 +14,41 @@ import javax.persistence.*;
 @Table(name = "case_library")
 public class CaseLibrary {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer caseLibraryID;
 
     @Column
     private String keyword;
 
-    private Integer materialUrl;
+    @Column
+    private String materialUrl;
 
+    public CaseLibrary(String keyword, String materialUrl) {
+        this.keyword = keyword;
+        this.materialUrl = materialUrl;
+    }
+
+    public Integer getCaseLibraryID() {
+        return caseLibraryID;
+    }
+
+    public void setCaseLibraryID(Integer caseLibraryID) {
+        this.caseLibraryID = caseLibraryID;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public String getMaterialUrl() {
+        return materialUrl;
+    }
+
+    public void setMaterialUrl(String materialUrl) {
+        this.materialUrl = materialUrl;
+    }
 }

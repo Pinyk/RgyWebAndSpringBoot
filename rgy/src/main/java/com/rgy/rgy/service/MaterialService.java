@@ -20,23 +20,36 @@ public class MaterialService {
 
     //根据人员资料名查询
     public List<Material> findByMaterialName(String name){
-        return materialDao.findByMaterialName(name);
+        return materialDao.findByMaterialNameLike("%"+name+"%");
     }
 
-    public int madd(String materialName, String materialUrl){
-        materialDao.save(new Material(materialName,materialUrl));
-        Material material = materialDao.findByMaterialNameAndAndMaterialUrl(materialName,materialUrl);
-        return material.getMaterialID();
-    }
-
-    public void update(Material material){
-        materialDao.save(material);
-    }
-
-    public Boolean cdel(int contractId){
-        Material material = materialDao.findByMaterialID(contractId);
+    public boolean add(String materialName, String materialUrl){
+        Material material = materialDao.save(new Material(materialName,materialUrl,0));
         if(material!=null){
-            materialDao.delete(material);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public Boolean update(Material material){
+        Material material1 = materialDao.findByGID(material.getMaterialID());
+        if(material1 == null){
+            return false;
+        }
+        material1 = material;
+        if(materialDao.save(material1)!=null){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public Boolean cdel(Integer contractId){
+        Material material = materialDao.findByGID(contractId);
+        if(material != null){
+            material.setInfoState(1);
+            materialDao.save(material);
             return true;
         }else {
             return false;

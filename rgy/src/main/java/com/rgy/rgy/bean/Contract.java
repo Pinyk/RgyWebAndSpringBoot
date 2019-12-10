@@ -24,7 +24,7 @@ public class Contract {
     //合同id
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int contractId;
+    private Integer contractId;
 
     //合同编号
     @Column
@@ -36,7 +36,7 @@ public class Contract {
 
     //合同金额
     @Column
-    private double contractAmount;
+    private Double contractAmount;
 
     //币种
     @Column
@@ -148,7 +148,7 @@ public class Contract {
 
     //开具发票金额
     @Column
-    private double lnvoiceAmount;
+    private Double lnvoiceAmount;
 
     //开具发票日期
     @Column
@@ -180,7 +180,7 @@ public class Contract {
 
     //回款金额
     @Column
-    private double paymentAmount;
+    private Double paymentAmount;
 
     //回款日期
     @Column
@@ -188,7 +188,7 @@ public class Contract {
 
     //回款余额
     @Column
-    private double paybackBalance;
+    private Double paybackBalance;
 
     //回款详情备注
     @Column
@@ -196,58 +196,13 @@ public class Contract {
 
     //状态
     @Column
-    private int infoState;
+    private Integer infoState;
 
-    public Contract( String contractNumber, String contractName, double contractAmount, String currency, String salesMan, String signYear, String signDate, String contractArea, String businessType, String overview, String contractText, String abnormalNote, String partyA, String partyAAddress, String partyALinkman, String partyAPhone, String partyAEmail, String partyB, String partyBLinkman, String partyBPhone, String partyBEmail, String executiveDept, String executiveStartDate, String executiveEndDate, String projectManager, String projectExecutive, String reportNumber, String reportUrl, String reportMailingDate, double lnvoiceAmount, String lnvoiceDate, String receiptDate, String mailingDate, String detailsNote, String receiverAddress, String receiverName, String receiverPhone, double paymentAmount, String paymentDate, double paybackBalance, String paymentNote, int infoState) {
-        this.contractNumber = contractNumber;
-        this.contractName = contractName;
-        this.contractAmount = contractAmount;
-        this.currency = currency;
-        this.salesMan = salesMan;
-        this.signYear = signYear;
-        this.signDate = signDate;
-        this.contractArea = contractArea;
-        this.businessType = businessType;
-        this.overview = overview;
-        this.contractText = contractText;
-        this.abnormalNote = abnormalNote;
-        this.partyA = partyA;
-        this.partyAAddress = partyAAddress;
-        this.partyALinkman = partyALinkman;
-        this.partyAPhone = partyAPhone;
-        this.partyAEmail = partyAEmail;
-        this.partyB = partyB;
-        this.partyBLinkman = partyBLinkman;
-        this.partyBPhone = partyBPhone;
-        this.partyBEmail = partyBEmail;
-        this.executiveDept = executiveDept;
-        this.executiveStartDate = executiveStartDate;
-        this.executiveEndDate = executiveEndDate;
-        this.projectManager = projectManager;
-        this.projectExecutive = projectExecutive;
-        this.reportNumber = reportNumber;
-        this.reportUrl = reportUrl;
-        this.reportMailingDate = reportMailingDate;
-        this.lnvoiceAmount = lnvoiceAmount;
-        this.lnvoiceDate = lnvoiceDate;
-        this.receiptDate = receiptDate;
-        this.mailingDate = mailingDate;
-        this.detailsNote = detailsNote;
-        this.receiverAddress = receiverAddress;
-        this.receiverName = receiverName;
-        this.receiverPhone = receiverPhone;
-        this.paymentAmount = paymentAmount;
-        this.paymentDate = paymentDate;
-        this.paybackBalance = paybackBalance;
-        this.paymentNote = paymentNote;
-        this.infoState = infoState;
-    }
-
-    public int getContractId() {
+    public Integer getContractId() {
         return contractId;
     }
 
-    public void setContractId(int contractId) {
+    public void setContractId(Integer contractId) {
         this.contractId = contractId;
     }
 
@@ -267,11 +222,11 @@ public class Contract {
         this.contractName = contractName;
     }
 
-    public double getContractAmount() {
+    public Double getContractAmount() {
         return contractAmount;
     }
 
-    public void setContractAmount(double contractAmount) {
+    public void setContractAmount(Double contractAmount) {
         this.contractAmount = contractAmount;
     }
 
@@ -483,11 +438,11 @@ public class Contract {
         this.reportMailingDate = reportMailingDate;
     }
 
-    public double getLnvoiceAmount() {
+    public Double getLnvoiceAmount() {
         return lnvoiceAmount;
     }
 
-    public void setLnvoiceAmount(double lnvoiceAmount) {
+    public void setLnvoiceAmount(Double lnvoiceAmount) {
         this.lnvoiceAmount = lnvoiceAmount;
     }
 
@@ -547,11 +502,11 @@ public class Contract {
         this.receiverPhone = receiverPhone;
     }
 
-    public double getPaymentAmount() {
+    public Double getPaymentAmount() {
         return paymentAmount;
     }
 
-    public void setPaymentAmount(double paymentAmount) {
+    public void setPaymentAmount(Double paymentAmount) {
         this.paymentAmount = paymentAmount;
     }
 
@@ -563,11 +518,11 @@ public class Contract {
         this.paymentDate = paymentDate;
     }
 
-    public double getPaybackBalance() {
+    public Double getPaybackBalance() {
         return paybackBalance;
     }
 
-    public void setPaybackBalance(double paybackBalance) {
+    public void setPaybackBalance(Double paybackBalance) {
         this.paybackBalance = paybackBalance;
     }
 
@@ -579,11 +534,11 @@ public class Contract {
         this.paymentNote = paymentNote;
     }
 
-    public int getInfoState() {
+    public Integer getInfoState() {
         return infoState;
     }
 
-    public void setInfoState(int infoState) {
+    public void setInfoState(Integer infoState) {
         this.infoState = infoState;
     }
 }

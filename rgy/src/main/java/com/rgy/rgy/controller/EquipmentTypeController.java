@@ -1,5 +1,6 @@
 package com.rgy.rgy.controller;
 
+import com.rgy.rgy.bean.Equipment;
 import com.rgy.rgy.bean.EquipmentType;
 import com.rgy.rgy.bean.Result;
 import com.rgy.rgy.service.EquipmentTypeService;
@@ -85,6 +86,16 @@ public class EquipmentTypeController {
             return new Result("success","删除成功");
         }else{
             return new Result("error","删除失败");
+        }
+    }
+
+    @GetMapping("/findById")
+    public Result findById(@RequestParam Integer equipmentTypeID){
+        EquipmentType equipment = equipmentTypeService.findById(equipmentTypeID);
+        if(equipment != null){
+            return new Result("success","成功",equipment);
+        }else{
+            return new Result("error","失败");
         }
     }
 }

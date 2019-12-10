@@ -41,6 +41,20 @@ public class ContractService {
 
     public boolean add(Contract contract){
         contract.setInfoState( 0 );
+        String getExecutiveEndDate = contract.getExecutiveEndDate().substring(0,10);
+        String getExecutiveStartDate = contract.getExecutiveStartDate().substring(0,10);
+        String getLnvoiceDate = contract.getLnvoiceDate().substring(0,10);
+        String getMailingDate = contract.getMailingDate().substring(0,10);
+        String getSignDate = contract.getSignDate().substring(0,10);
+        String getReceiptDate = contract.getReceiptDate().substring(0,10);
+        String getPaymentDate = contract.getPaymentDate().substring(0,10);
+        contract.setExecutiveEndDate(getExecutiveEndDate);
+        contract.setExecutiveStartDate(getExecutiveStartDate);
+        contract.setLnvoiceDate(getLnvoiceDate);
+        contract.setMailingDate(getMailingDate);
+        contract.setSignDate(getSignDate);
+        contract.setReceiptDate(getReceiptDate);
+        contract.setPaymentDate(getPaymentDate);
         Contract contract1 = contractDao.save( contract );
         if (contract1 != null) {
             return true;
@@ -51,14 +65,17 @@ public class ContractService {
 
     public boolean update(Contract contract){
         Contract contract1 = contractDao.findByContractId( contract.getContractId() );
-        if (contract1 != null) {
-            return true;
-        } else {
+        if (contract1 == null) {
             return false;
         }
+        contract1 = contract;
+        if (contractDao.save(contract1) != null){
+            return true;
+        }
+        return false;
     }
 
-    public Boolean delete(int contractId){
+    public Boolean delete(Integer contractId){
         Contract contract = contractDao.findByContractId(contractId);
         if(contract != null){
             contract.setInfoState(1);
@@ -68,4 +85,10 @@ public class ContractService {
             return false;
         }
     }
+
+    public Contract findbyid(Integer contractId) {
+        Contract contract1 = contractDao.findByContractId(contractId);
+        return contract1;
+    }
+
 }

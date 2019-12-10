@@ -18,8 +18,8 @@ public class Params {
     @Column(name = "paramsId")
     private Integer paramsId;
 
-    @ManyToOne(targetEntity = Items.class)
-    @JoinColumn(name = "itemsId")
+//    @ManyToOne(targetEntity = Items.class)
+//    @JoinColumn(name = "itemsId")
     private Integer itemsId;
 
     @Column

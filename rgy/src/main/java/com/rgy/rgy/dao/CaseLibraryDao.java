@@ -13,6 +13,7 @@ public interface CaseLibraryDao extends JpaRepository<CaseLibrary,Integer> {
 //    @Query("select p from CaseLibrary p")
 //    List<CaseLibrary> findAll();
 
-    CaseLibrary findByCaseLibraryID(int id);
+    @Query("select p from CaseLibrary p where p.caseLibraryID = ?1")
+    CaseLibrary findByCID(Integer id);
 
 }

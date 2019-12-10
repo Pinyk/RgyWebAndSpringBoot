@@ -1,5 +1,6 @@
 package com.rgy.rgy.service;
 
+import com.rgy.rgy.bean.Equipment;
 import com.rgy.rgy.bean.EquipmentType;
 import com.rgy.rgy.dao.EquipmentTypeDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +60,9 @@ public class EquipmentTypeService {
         }else{
             return false;
         }
+    }
+
+    public EquipmentType findById(Integer equipmentTypeID) {
+        return equipmentTypeDao.findByEquipmentTypeID(equipmentTypeID);
     }
 }

@@ -2,12 +2,14 @@ package com.rgy.rgy.controller;
 
 
 import com.rgy.rgy.bean.Equipment;
+import com.rgy.rgy.bean.EquipmentType;
 import com.rgy.rgy.bean.Result;
 import com.rgy.rgy.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: gaoyk
@@ -52,9 +54,9 @@ public class EquipmentController {
      * 返回所有设备信息
      * @return
      */
-    @GetMapping("/findAll")
+    @GetMapping("/findall")
     public Result findAll(){
-        List<Equipment> equipment = equipmentService.findALl();
+        List<Equipment> equipment = equipmentService.findAll();
         if(equipment!=null && !equipment.isEmpty()){
             return new Result("success","返回成功",equipment);
         }else{
@@ -72,9 +74,10 @@ public class EquipmentController {
     @GetMapping("/findByCondition")
     public Result findByCondition(@RequestParam String equipmentName,
                                   @RequestParam String equipmentTypeID,
-                                  @RequestParam String voltageLevel){
-        List<Equipment> equipment = equipmentService.findByCondition(equipmentName,
-                equipmentTypeID,voltageLevel);
+                                  @RequestParam String voltageLevel,
+                                  @RequestParam Integer powerPlantID){
+        Map<Equipment, EquipmentType> equipment = equipmentService.findByCondition(equipmentName,
+                equipmentTypeID,voltageLevel,powerPlantID);
         if(equipment != null){
             return new Result("success","查找成功",equipment);
         }else{
@@ -84,12 +87,23 @@ public class EquipmentController {
 
     /**
      * 根据电厂ID查找设备
+     * 带设备类型查找
      * @param powerPlantID
      * @return
      */
     @GetMapping("/findByPowerPlanID")
     public Result findByPowerPlantId(@RequestParam Integer powerPlantID){
-        List<Equipment> equipment = equipmentService.findByPowerPlantId(powerPlantID);
+        Map<Equipment, EquipmentType> equipment = equipmentService.findByPowerPlantId(powerPlantID);
+        if(equipment != null && !equipment.isEmpty()){
+            return new Result("success","返回成功",equipment);
+        }else{
+            return new Result("error","返回失败");
+        }
+    }
+
+    @GetMapping("/findByPowerPlantId")
+    public Result findById(@RequestParam Integer powerPlantID){
+        List<Equipment> equipment = equipmentService.findById(powerPlantID);
         if(equipment != null && !equipment.isEmpty()){
             return new Result("success","返回成功",equipment);
         }else{

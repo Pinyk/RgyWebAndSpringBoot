@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: Silvia
@@ -22,23 +23,24 @@ public class RoleController {
 
     /**
      * 根据名称查询角色
-     * @param name
+     * @param roleName
      * @return
      */
-    @GetMapping("/getByName")
-    public Result getByName ( String name ){
-        Role role = roleService.findByName( name );
-        if (role != null) {
-            return new Result( "success","查询成功", role );
+    @GetMapping("/findByName")
+    public Result getByName (@RequestParam String roleName ){
+        List<Role> roles = roleService.findByRoleName( roleName );
+        if (roles != null && !roles.isEmpty()) {
+            return new Result( "success","查询成功", roles );
         } else {
             return new Result( "error","查询失败" );
         }
     }
+
     /**
      * 查询所有角色
      * @return
      */
-    @GetMapping("/findAll")
+    @GetMapping("/findall")
     public Result findAll() {
         List<Role> roles = roleService.findAll();
         if (roles != null && !roles.isEmpty()) {
@@ -53,8 +55,8 @@ public class RoleController {
      * @param role
      * @return
      */
-    @GetMapping("/update")
-    public Result updateRole( Role role ) {
+    @PostMapping("/update")
+    public Result updateRole(@RequestBody Role role ) {
         if (roleService.update( role )) {
             return new Result( "success", "修改成功");
         } else {
@@ -69,27 +71,25 @@ public class RoleController {
      * @return
      */
     @PostMapping("/add")
-    public Result saveRole( Role role ) {
-        if ( roleService.update( role ) ) {
+    public Result saveRole(@RequestBody Role role ) {
+        if ( roleService.add( role ) ) {
             return new Result( "success", "新增成功");
         } else {
             return new Result( "error", "新增失败");
         }
-
     }
 
     /**
      * 删除角色
-     * @param id
+     * @param roleId
      * @return
      */
     @GetMapping("/delete")
-    public Result deleteRole( int id ) {
-        if (roleService.delete( id )) {
+    public Result deleteRole(@RequestParam Integer roleId ) {
+        if (roleService.delete( roleId )) {
             return new Result( "success", "删除成功" );
         } else {
             return new Result( "error", "删除失败" );
         }
     }
-
 }

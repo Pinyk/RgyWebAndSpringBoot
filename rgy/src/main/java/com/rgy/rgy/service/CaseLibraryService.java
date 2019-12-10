@@ -19,17 +19,26 @@ public class CaseLibraryService {
     }
 
 
-    public boolean add(CaseLibrary caseLibrary){
-        return caseLibraryDao.save(caseLibrary) != null ;
+    public boolean add(String keyword,String root){
+        return caseLibraryDao.save(new CaseLibrary(keyword,root)) != null;
     }
 
     public boolean update(CaseLibrary caseLibrary){
-        return caseLibraryDao.save(caseLibrary) != null ;
+        CaseLibrary caseLibrary1 = caseLibraryDao.findByCID(caseLibrary.getCaseLibraryID());
+        if(caseLibrary1 == null){
+            return false;
+        }
+        caseLibrary1 = caseLibrary;
+        if(caseLibraryDao.save(caseLibrary1) != null){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 
     public boolean delete(Integer id){
-        CaseLibrary caseLibrary = caseLibraryDao.findByCaseLibraryID(id);
+        CaseLibrary caseLibrary = caseLibraryDao.findByCID(id);
         if(caseLibrary != null) {
             caseLibraryDao.deleteById(id);
             return true;

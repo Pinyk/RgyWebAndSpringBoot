@@ -19,7 +19,7 @@ public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reportId")
-    private int reportId;
+    private Integer reportId;
 
     @Column
     private String reportNumber;
@@ -28,7 +28,7 @@ public class Report {
     private String reportName;
 
     @Column
-    private int contractId;
+    private Integer contractId;
 
     @Column
     private String responsibleUnit;

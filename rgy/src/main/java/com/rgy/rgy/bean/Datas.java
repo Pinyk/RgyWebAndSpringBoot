@@ -20,20 +20,23 @@ public class Datas {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "datasId")
-    private int datasId;
+    private Integer datasId;
 
     @OneToOne(targetEntity = Report.class)
     @JoinColumn(name = "reportId")
-    private int reportId;
+    private Integer reportId;
 
     @Column
     private String powerPlantName;
 
     @Column
-    private int templateId;
+    private Integer templateId;
 
     @Column
-    private int paramsId;
+    private Integer paramsId;
+
+    @Column
+    private Integer equipmentId;
 
     @Column
     private String Datasvalue;

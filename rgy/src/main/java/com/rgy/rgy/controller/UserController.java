@@ -4,13 +4,9 @@ import com.rgy.rgy.bean.Result;
 import com.rgy.rgy.bean.User;
 import com.rgy.rgy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
-
-
 
 /**
  * @Author: Silvia
@@ -30,41 +26,56 @@ public class UserController {
      * @return
      */
     @GetMapping("/login")
-    public Result Login (String name, String password) {
-            boolean verify;
-            verify = userService.login(name, password);
-
-            if (verify == true) {
-                return new Result("success", "登陆成功");
-            }else {
-                return new Result( "error", "登录失败" );
-            }
-
+    public Result Login (@RequestParam String name,@RequestParam String password) {
+        boolean verify;
+        verify = userService.login(name, password);
+        if (verify == true) {
+            return new Result("success", "登陆成功");
+        }else {
+            return new Result( "error", "登录失败" );
+        }
     }
 
     /**
      * 查询所有
      * @return
      */
-    @GetMapping("/getAll")
+    @GetMapping("/findall")
     public Result getAll(){
-        List<User> users = userService.findAll();
-        if(users != null){
-            return new Result( "success","查询成功", users );
+        List<User> all = userService.findAll();
+        if(!all.isEmpty() && all != null){
+            return new Result( "success","查询成功", all );
         }else {
             return new Result( "error","查询失败" );
         }
     }
 
     /**
+     * 根据名称查询
+     */
+    @GetMapping("/findByName")
+    public Result findByName(@RequestParam String name) {
+        List<User> byNameLike = userService.findByNameLike( name );
+        if(byNameLike!=null) {
+            return new Result( "success","查询成功", byNameLike );
+        } else {
+            return new Result( "error","查询失败" );
+        }
+    }
+
+
+    /**
      * 新增用户
      * @param user
      * @return
      */
-    @GetMapping("/saveUser")
-    public Result saveUser( User user ) {
-        userService.update( user );
-        return new Result( "success", "保存成功");
+    @PostMapping("/add")
+    public Result saveUser( @RequestBody User user ) {
+        if(userService.add( user )) {
+            return new Result( "success", "保存成功");
+        } else {
+            return new Result("error","添加失败");
+        }
     }
 
     /**
@@ -72,20 +83,23 @@ public class UserController {
      * @param user
      * @return
      */
-    @GetMapping("/updateUser")
-    public Result updateUser( User user ) {
-        userService.update( user );
-        return new Result( "success", "修改成功");
+    @PostMapping("/update")
+    public Result updateUser( @RequestBody User user ) {
+        if (userService.update( user )) {
+            return new Result( "success", "更新成功");
+        } else{
+            return new Result("error","更新失败");
+        }
     }
 
     /**
      * 删除用户
-     * @param id
+     * @param userId
      * @return
      */
-    @GetMapping("/deleteUser")
-    public Result deleteUser( int id ) {
-        if (userService.delete( id )) {
+    @GetMapping("/delete")
+    public Result deleteUser(@RequestParam Integer userId ) {
+        if (userService.delete( userId )) {
             return new Result( "success", "删除成功"  );
         } else {
             return new Result( "error", "删除失败" );

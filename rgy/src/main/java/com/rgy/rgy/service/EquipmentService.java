@@ -1,11 +1,15 @@
 package com.rgy.rgy.service;
 
 import com.rgy.rgy.bean.Equipment;
+import com.rgy.rgy.bean.EquipmentType;
 import com.rgy.rgy.dao.EquipmentDao;
+import com.rgy.rgy.dao.EquipmentTypeDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: gaoyk
@@ -17,6 +21,9 @@ public class EquipmentService{
     @Autowired
     EquipmentDao equipmentDao;
 
+    @Autowired
+    EquipmentTypeDao equipmentTypeDao;
+
     public Boolean add(Equipment equipment) {
         equipment.setInfoState(0);
         Equipment equipment1 = equipmentDao.save(equipment);
@@ -27,18 +34,33 @@ public class EquipmentService{
         }
     }
 
-    public List<Equipment> findALl(){
+    public List<Equipment> findAll(){
         return equipmentDao.findAll();
     }
 
-    public List<Equipment> findByCondition(String equipmentName,
+    public Map<Equipment, EquipmentType> findByCondition(String equipmentName,
                                            String equipmentTypeID,
-                                           String voltageLevel) {
-        return equipmentDao.findbyCondition(equipmentName,equipmentTypeID,voltageLevel);
+                                           String voltageLevel,
+                                           Integer powerPlantID) {
+        List<Equipment> equipmentList = equipmentDao.findbyCondition(equipmentName,equipmentTypeID,voltageLevel,powerPlantID);;
+        Map<Equipment, EquipmentType> map = new LinkedHashMap<>();
+        for(int i = 0; i < equipmentList.size(); i++){
+            int a = equipmentList.get(i).getEquipmentTypeID();
+            EquipmentType equipmentType = equipmentTypeDao.findByEquipmentTypeID(a);
+            map.put(equipmentList.get(i),equipmentType);
+        }
+        return map;
     }
 
-    public List<Equipment> findByPowerPlantId(Integer powerPlantID) {
-        return equipmentDao.findByPowerPlantID(powerPlantID);
+    public Map<Equipment, EquipmentType> findByPowerPlantId(Integer powerPlantID){
+        List<Equipment> equipmentList = equipmentDao.findByPowerPlantID(powerPlantID);
+        Map<Equipment, EquipmentType> map = new LinkedHashMap<>();
+        for(int i = 0; i < equipmentList.size(); i++){
+            int a = equipmentList.get(i).getEquipmentTypeID();
+            EquipmentType equipmentType = equipmentTypeDao.findByEquipmentTypeID(a);
+            map.put(equipmentList.get(i),equipmentType);
+        }
+        return map;
     }
 
     public boolean update(Equipment equipment) {
@@ -63,5 +85,9 @@ public class EquipmentService{
         }else{
             return false;
         }
+    }
+
+    public List<Equipment> findById(Integer powerPlantID) {
+        return equipmentDao.findByPowerPlantID(powerPlantID);
     }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface TemplateDao extends JpaRepository<Template,Integer>{
+    List<Template> findByTemplateNameLike(String templateName);
     Template findByTemplateName(String templateName);
     Template findByTemplateId(int templateId);
 }

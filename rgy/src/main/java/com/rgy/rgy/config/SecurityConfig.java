@@ -1,5 +1,6 @@
 package com.rgy.rgy.config;
 
+import com.rgy.rgy.service.UserDetailsServiceMy;
 import com.rgy.rgy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -7,55 +8,58 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * @Author: gaoyk
  * @Date: 2019/11/4 19:29
  */
 
-@EnableWebSecurity
+
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    UserService userService;
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        auth.inMemoryAuthentication()
-//                .passwordEncoder(passwordEncoder)
-//                .withUser("admin")
-//                .password("123456")
-//                .roles("USER","ADMIN")
-//                .and()
-//                .withUser("pinyk")
-//                .password("123")
-//                .roles("USER");
-//        auth.userDetailsService(new UserDetailsService() {
-//            @Override
-//            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//                User user = userService.getUserByName(username);
-//                if(user == null){
-//                    throw new UsernameNotFoundException("用户名不存在");
-//                }
-//                return (UserDetails) user;
-//            }
-//        });
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.
-                authorizeRequests()
+        http.authorizeRequests()
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/template/**").permitAll()
 //                .anyRequest().authenticated()    //操作必须是已登录状态
+//                .and()
+//                .formLogin()
+                //.loginPage("/index.html").permitAll()
                 .and()
-                .formLogin()
-                .loginPage("/user/login1")
-                .and()
-                .csrf().disable()
-                .httpBasic();
+                .csrf().disable();
+                //.httpBasic();
     }
+    @Autowired
+    UserDetailsServiceMy myUserDetailsService;
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+
+        auth.userDetailsService( myUserDetailsService ).passwordEncoder( passwordEncoder() );
+    }
+
+    private PasswordEncoder passwordEncoder() {
+        return new MyPasswordEncoder();
+        //return new BCryptPasswordEncoder();
+    }
+
+
+    public class MyPasswordEncoder implements PasswordEncoder {
+        @Override
+        public String encode(CharSequence charSequence) {
+            return charSequence.toString();
+        }
+
+        @Override
+        public boolean matches(CharSequence charSequence, String s) {
+            return s.equals(charSequence.toString());
+        }
+    }
+
 }
+

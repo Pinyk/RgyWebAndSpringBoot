@@ -16,7 +16,7 @@ public class ReportService {
     @Autowired
     ReportDao reportDao;
 
-    public int radd(Report report){
+    public Integer radd(Report report){
         Report report1 = reportDao.save(report);
         return report1.getReportId();
     }
@@ -26,14 +26,26 @@ public class ReportService {
         return reports;
     }
 
-    public Report findByName(String reportName){
-        return reportDao.findByReportName(reportName);
+    public List<Report> findByName(String reportNumber, Integer contractId, String reportName){
+        return reportDao.findByCondition(reportNumber,contractId,reportName);
     }
 
-    public boolean deleteReport(Report report) {
-        String msg = report.getReportName();
-        reportDao.delete(report);
-        if(reportDao.findByReportName(msg)==null){
+    public boolean deleteReport(Integer reportId) {
+        reportDao.deleteById(reportId);
+        if(reportDao.findById(reportId) == null){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public boolean update(Report report) {
+        Report report1 = reportDao.findByGId(report.getReportId());
+        if(report1 == null){
+            return false;
+        }
+        report1 = report;
+        if(reportDao.save(report1) != null){
             return true;
         }else{
             return false;

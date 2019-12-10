@@ -1,64 +1,44 @@
 package com.rgy.rgy.bean;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 
-/**
- * @Author：AnZhuJun
- * @Date: 2019/11/17 15:00
- */
-
 //实验人员资料管理
+@Data
 @Entity
 @Table(name = "material")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Material {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int materialID;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer materialID;
 
     @Column
     private String materialName;
 
-    @Column(name = "materialUrl")
+    @Column
     private String materialUrl;
 
-    public Material(int materialID, String materialName, String materialUrl) {
-        this.materialID = materialID;
+    @Column
+    private Integer infoState;
+
+
+    public Material(String materialName, String materialUrl, Integer infoState) {
         this.materialName = materialName;
         this.materialUrl = materialUrl;
+        this.infoState = infoState;
     }
 
-
-
-    public Material() {
-    }
-
-    public Material(String materialName, String materialUrl) {
-        this.materialName = materialName;
-        this.materialUrl = materialUrl;
-    }
-
-    public int getMaterialID() {
+    public Integer getMaterialID() {
         return materialID;
     }
 
-    public void setMaterialID(int materialID) {
+    public void setMaterialID(Integer materialID) {
         this.materialID = materialID;
-    }
-
-    public String getMaterialName() {
-        return materialName;
-    }
-
-    public void setMaterialName(String materialName) {
-        this.materialName = materialName;
-    }
-
-    public String getMaterialUrl() {
-        return materialUrl;
-    }
-
-    public void setMaterialUrl(String materialUrl) {
-        this.materialUrl = materialUrl;
     }
 }

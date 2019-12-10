@@ -22,17 +22,31 @@ public class ReportController {
     ReportService reportService;
 
     /**
-     * 新增、修改报告
+     * 新增报告
      * @param report
      * @return
      */
     @PostMapping("/add")
     public Result radd(@RequestBody Report report){
-        int reportId = reportService.radd(report);
-        if(reportId!=0){
+        Integer reportId = reportService.radd(report);
+        if(reportId > 0){
             return new Result("success","新增成功",reportId);
         }else{
             return new Result("error","新增失败");
+        }
+    }
+
+    /**
+     * 更新
+     * @param report
+     * @return
+     */
+    @PostMapping("/update")
+    public Result update(@RequestBody Report report){
+        if(reportService.update(report)){
+            return new Result("success","修改成功");
+        }else{
+            return new Result("error","修改失败");
         }
     }
 
@@ -51,27 +65,29 @@ public class ReportController {
     }
 
     /**
-     * 使用名字查找
+     * 条件查找
+     * @param reportNumber
+     * @param contractId
      * @param reportName
      * @return
      */
-    @GetMapping("/findbyname")
-    public Result findByName(@RequestParam String reportName){
-        Report report = reportService.findByName(reportName);
-        if (report==null){
-            return new Result("success","查找成功",report);
+    @GetMapping("/findCondition")
+    public Result findByName(@RequestParam String reportNumber, @RequestParam  Integer contractId, @RequestParam String reportName){
+        List<Report> reports = reportService.findByName(reportNumber,contractId,reportName);
+        if (reports != null){
+            return new Result("success","查找成功",reports);
         }
         return new Result("error","查找失败");
     }
 
     /**
-     * 删除报告
-     * @param report
+     * 删除
+     * @param reportId
      * @return
      */
     @GetMapping("/delete")
-    public Result removeReport(@RequestBody Report report){
-        if(reportService.deleteReport(report)){
+    public Result removeReport(@RequestParam Integer reportId){
+        if(reportService.deleteReport(reportId)){
             return new Result("success","删除成功");
         }else{
             return new Result("error","删除失败");

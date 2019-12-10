@@ -5,7 +5,12 @@ import com.rgy.rgy.bean.Result;
 import com.rgy.rgy.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,6 +18,7 @@ import java.util.List;
  * @Date: 2019/11/15 14:46
  */
 
+@CrossOrigin
 @RestController
 @RequestMapping("/contract")
 public class ContractController {
@@ -23,7 +29,7 @@ public class ContractController {
      * 新增合同
      * @return
      */
-    @GetMapping("/add")
+    @PostMapping("/add")
     public Result add(@RequestBody Contract contract) {
         if (contractService.add( contract )) {
             return new Result( "success", "添加成功" );
@@ -48,9 +54,29 @@ public class ContractController {
     @GetMapping("/findAll")
     public Result findAll(){
         List<Contract> contracts = contractService.findAll();
-        if(contracts != null && !contracts.isEmpty()){
+        if(contracts != null && !contracts.isEmpty() ){
             return new Result("success","返回成功",contracts);
         }else{
+            return new Result("error","返回失败");
+        }
+    }
+//    /**
+//     * 根据id判断是否有数据
+//     */
+//    @PostMapping("/isidexist")
+//    public Boolean isIdExist(@RequestParam Integer contractId) {
+//        return contractService.isidExist(contractId);
+//    }
+
+    /**
+     * 根据id传数据
+     */
+    @GetMapping("/findbyid")
+    public Result findById(@RequestParam Integer contractId) {
+        Contract contract = contractService.findbyid(contractId);
+        if (contract != null) {
+            return new Result("success","返回成功",contract);
+        }else {
             return new Result("error","返回失败");
         }
     }
@@ -60,7 +86,7 @@ public class ContractController {
      * @return
      */
     @GetMapping("/delete")
-    public Result delete(@RequestParam int contractId){
+    public Result delete(@RequestParam Integer contractId){
         if(contractService.delete(contractId)){
             return new Result("success","删除成功");
         }else{
@@ -69,18 +95,18 @@ public class ContractController {
     }
 
     /**
-     * 通过合同名查找合同
+     * 通过合同名查找合同*/
 
-    @GetMapping("/findbyName")
-    public Result find(@RequestParam String contractName){
-        List<Contract> contract = contractService.findContractByContractName(contractName);
-        if(contract!=null && !contract.isEmpty()){
-            return new Result("success","查找成功",contract);
-        }else{
-            return new Result("error","查找失败");
-        }
-    }
-    */
+//    @GetMapping("/findbyName")
+//    public Result find(@RequestParam String contractName){
+//        List<Contract> contract = contractService.findContractByContractName(contractName);
+//        if(contract!=null && !contract.isEmpty()){
+//            return new Result("success","查找成功",contract);
+//        }else{
+//            return new Result("error","查找失败");
+//        }
+//    }
+
 
     /**
      * 通过综合条件查找合同
@@ -106,5 +132,71 @@ public class ContractController {
         }else{
             return new Result("error","返回失败");
         }
+    }
+
+    //单文件上传
+    @PostMapping("/fileUpload")
+    public String fileUpload(@RequestParam("file") MultipartFile file){
+        if(file.isEmpty()){
+            return "false";
+        }
+        String fileName = file.getOriginalFilename();
+        System.out.println(fileName);
+        int size = (int) file.getSize();
+        System.out.println(fileName + "-->" + size);
+        String path = "F:\\热工院项目\\rgy-master\\rgy-master\\src\\main\\resources\\contractfiles" ;
+        File dest = new File(path + "/" + fileName);
+        if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
+            dest.getParentFile().mkdir();
+        }
+        try {
+            file.transferTo(dest); //保存文件
+            return "true";
+        } catch (IllegalStateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return "false";
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return "false";
+        }
+    }
+
+    //多文件上传
+//    @RequestMapping(value="multifileUpload",method= RequestMethod.POST)
+    @PostMapping("/multifileload")
+    public @ResponseBody Result multifileUpload(HttpServletRequest request){
+
+        List<MultipartFile> files = ((MultipartHttpServletRequest)request).getFiles("file");
+
+        if(files.isEmpty()){
+            return new Result("error","失败1");
+        }
+
+        String path = "F:\\热工院项目\\rgy-master\\rgy-master\\src\\main\\resources\\contractfiles" ;
+
+        for(MultipartFile file:files){
+            String fileName = file.getOriginalFilename();
+            int size = (int) file.getSize();
+            System.out.println(fileName + "-->" + size);
+
+            if(file.isEmpty()){
+                return new Result("error","失败2");
+            }else{
+                File dest = new File(path + "/" + fileName);
+                if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
+                    dest.getParentFile().mkdir();
+                }
+                try {
+                    file.transferTo(dest);
+                }catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    return new Result("error","失败3");
+                }
+            }
+        }
+        return new Result("success","成功");
     }
 }

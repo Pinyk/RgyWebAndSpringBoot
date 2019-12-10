@@ -6,6 +6,7 @@ import com.rgy.rgy.dao.PowerPlantDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,7 +62,12 @@ public class PowerPlantService {
                 powerPlantType,generatorCapacity,voltageLevel);
     }
 
-    public List<PowerPlant> findByType(String powerPlantType) {
-        return powerPlantDao.findByPowerPlantType(powerPlantType);
+    public List<List<PowerPlant>> findByType(){
+        List<List<PowerPlant>> listList = new ArrayList<>();
+        listList.add(powerPlantDao.findByPowerPlantType("火电厂"));
+        listList.add(powerPlantDao.findByPowerPlantType("水电厂"));
+        listList.add(powerPlantDao.findByPowerPlantType("风电厂"));
+        listList.add(powerPlantDao.findByPowerPlantType("新能源"));
+        return listList;
     }
 }

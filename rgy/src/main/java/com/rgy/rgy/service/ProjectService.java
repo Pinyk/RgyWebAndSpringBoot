@@ -8,6 +8,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @Author: gaoyk
+ * @Date: 2019/10/30 21:01
+ */
+
 @Service
 public class ProjectService {
     @Autowired
@@ -15,6 +20,7 @@ public class ProjectService {
 
     public boolean add(Project project){
         project.setInfoState(0);
+
         Project project1 = projectDao.save(project);
         if(project1 != null){
             return true;
@@ -25,11 +31,9 @@ public class ProjectService {
 
     public boolean update(Project project){
         Project project1 = projectDao.findByid(project.getProjectId());
-
         if(project1 == null){
             return false;
         }
-
         project1 = project;
         if(projectDao.save(project1) != null){
             return true;

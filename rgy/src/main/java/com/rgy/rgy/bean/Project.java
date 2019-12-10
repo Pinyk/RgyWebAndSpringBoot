@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.text.DecimalFormat;
 
 //实验报价
 @Data
@@ -17,7 +18,7 @@ import javax.persistence.*;
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int projectId;
+    private Integer projectId;
 
     @Column
     private String projectName;
@@ -32,31 +33,37 @@ public class Project {
     private String unit;
 
     @Column
-    private double s100MWPrice;
+    private Double s100MWPrice;
 
     @Column
-    private double s100MWOverPrice;
+    private Double s100MWOverPrice;
 
     @Column
-    private double h300MWPrice;
+    private Double h300MWPrice;
 
     @Column
-    private double h600MWPrice;
+    private Double h600MWPrice;
 
     @Column
-    private double h1000MWPrice;
+    private Double h1000MWPrice;
 
     @Column
-    private double d220KVPrice;
+    private Double d220KVPrice;
 
     @Column
-    private double d500KVPrice;
+    private Double d500KVPrice;
 
     @Column
-    private double d750KVPrice;
+    private Double d750KVPrice;
 
     @Column
-    private double d50MWBelowPrice;
+    private Double d50MWBelowPrice;
+
+    @Column
+    private Double d100MWBelowPrice;
+
+    @Column
+    private Double d50MWOverPrice;
 
     @Column
     private Integer infoState;

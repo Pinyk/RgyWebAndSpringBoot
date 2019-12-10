@@ -100,18 +100,16 @@ public class PowerPlantController {
     }
 
     /**
-     * 根据类型查找电厂
-     * @param powerPlantType
+     * 返回每个类型电厂列表
      * @return
      */
     @GetMapping("/findByType")
-    public Result findByType(@RequestParam String powerPlantType){
-        List<PowerPlant> powerPlants = powerPlantService.findByType(powerPlantType);
+    public Result findByType(){
+        List<List<PowerPlant>> powerPlants = powerPlantService.findByType();
         if (powerPlants != null && !powerPlants.isEmpty()) {
             return new Result("success", "返回成功", powerPlants);
         } else {
             return new Result("error", "返回失败");
         }
     }
-
 }
