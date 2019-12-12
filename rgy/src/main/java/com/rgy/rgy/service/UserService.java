@@ -23,29 +23,18 @@ public class UserService {
     @Autowired
     RoleDao roleDao;
 
-    public boolean login(String name, String password) {
-        User user = userDao.findByUsername( name );
-        if (user.getUsername() == null) {
-            return false;
-        }
-
-        String userName = user.getUsername();
-        String userPassword = user.getPassword();
-
-        if (name.equals(userName) && password.equals(userPassword)) {
-            return true;
-        }else {
-            return false;
-        }
-    }
-
     public List<User> findByNameLike(String userName) {
         List<User> users = userDao.findByUsernameLike( "%" + userName + "%" );
         for (User user : users) {
-            Role role = roleDao.findByRoleId( (Integer.valueOf( user.getRoleId() )) );
-            if (role != null && role.getRoleName() != null) {
-                user.setRoleId( role.getRoleName() );
+            if (user.getInfoState() == 1) {
+                users.remove( user );
+            } else {
+                Role role = roleDao.findByRoleId( (Integer.valueOf( user.getRoleId() )) );
+                if (role != null && role.getRoleName() != null) {
+                    user.setRoleId( role.getRoleName() );
+                }
             }
+
         }
         return users;
     }
@@ -53,9 +42,13 @@ public class UserService {
     public List<User> findAll() {
         List<User> all = userDao.findAll();
         for (User user :all) {
-            Role role = roleDao.findByRoleId( (Integer.valueOf( user.getRoleId() )) );
-            if (role != null && role.getRoleName() != null)
-                user.setRoleId( role.getRoleName() );
+            if (user.getInfoState() == 1) {
+                all.remove( user );
+            } else {
+                Role role = roleDao.findByRoleId( (Integer.valueOf( user.getRoleId() )) );
+                if (role != null && role.getRoleName() != null)
+                    user.setRoleId( role.getRoleName() );
+            }
         }
         return all;
     }

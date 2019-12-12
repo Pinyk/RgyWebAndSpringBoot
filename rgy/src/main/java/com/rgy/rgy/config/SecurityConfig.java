@@ -147,10 +147,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                        HttpMethod.GET,
 //                        "/",
 //                        "/*.html",
-//                        "/favicon.ico"
-//
-//
-//}
+//                        "/favicon.ico","/**/*.html",
+//                                "/**/*.css",
+  //                              "/**/*.js"
+    //                            );
+      //                          }
+        //                        }
+
+
 
 
 

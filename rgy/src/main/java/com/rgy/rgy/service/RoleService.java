@@ -1,14 +1,11 @@
 package com.rgy.rgy.service;
 
 import com.rgy.rgy.bean.Role;
-import com.rgy.rgy.bean.User;
 import com.rgy.rgy.dao.RoleDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeSet;
 
 
@@ -26,7 +23,11 @@ public class RoleService {
     public List<Role> findByRoleName(String roleName){
         List<Role> roles = roleDao.findByRoleNameLike( "%" + roleName + "%" );
         for (Role role: roles) {
-            role.setAuthorities( getAuthorities(role) );
+            if (role.getInfoState() == 1) {
+                roles.remove( role );
+            } else {
+                role.setAuthorities( getAuthorities(role) );
+            }
         }
         return roles;
     }
@@ -34,9 +35,14 @@ public class RoleService {
     public List<Role> findAll() {
         List<Role> roles = roleDao.findAll();
 
-        for (Role role: roles) {
-            role.setAuthorities( getAuthorities(role) );
+        for (int i = 0; i < roles.size(); i++) {
+            if (roles.get( i ).getInfoState() == 1) {
+                roles.remove( roles.get( i ) );
+            } else {
+                roles.get(i).setAuthorities( getAuthorities( roles.get( i ) ) );
+            }
         }
+
         return roles;
     }
 
@@ -75,7 +81,6 @@ public class RoleService {
             }
         }
         String auth = new String();
-        //auth += "";
         for (String a : all) {
             auth = auth + a + ",";
         }

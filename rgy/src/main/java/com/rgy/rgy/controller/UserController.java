@@ -18,28 +18,11 @@ import java.util.List;
 public class UserController {
     @Autowired
     UserService userService;
-
-    /**
-     * 用户登录
-     * @param name
-     * @param password
-     * @return
-     */
-    @GetMapping("/login")
-    public Result Login (@RequestParam String name,@RequestParam String password) {
-        boolean verify;
-        verify = userService.login(name, password);
-        if (verify == true) {
-            return new Result("success", "登陆成功");
-        }else {
-            return new Result( "error", "登录失败" );
-        }
-    }
-
     /**
      * 查询所有
      * @return
      */
+
     @GetMapping("/findall")
     public Result getAll(){
         List<User> all = userService.findAll();
