@@ -15,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "template")
-public class Template {
+public class Template implements Comparable<Template>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "templateId")
@@ -39,7 +39,7 @@ public class Template {
     @Column
     private Integer infoState;
 
-    public int getTemplateId() {
+    public Integer getTemplateId() {
         return templateId;
     }
 
@@ -52,7 +52,61 @@ public class Template {
         this.infoState = infoState;
     }
 
-    public void setInfoState(int infoState) {
+    public void setTemplateId(Integer templateId) {
+        this.templateId = templateId;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
+
+    public String getBasis() {
+        return basis;
+    }
+
+    public void setBasis(String basis) {
+        this.basis = basis;
+    }
+
+    public String getEquipmentTypeId() {
+        return equipmentTypeId;
+    }
+
+    public void setEquipmentTypeId(String equipmentTypeId) {
+        this.equipmentTypeId = equipmentTypeId;
+    }
+
+    public String getEditor() {
+        return editor;
+    }
+
+    public void setEditor(String editor) {
+        this.editor = editor;
+    }
+
+    public String getEditorDate() {
+        return editorDate;
+    }
+
+    public void setEditorDate(String editorDate) {
+        this.editorDate = editorDate;
+    }
+
+    public Integer getInfoState() {
+        return infoState;
+    }
+
+    public void setInfoState(Integer infoState) {
         this.infoState = infoState;
+    }
+
+    @Override
+    public int compareTo(Template o) {
+        int i = this.templateId - o.getTemplateId();
+        return i;
     }
 }

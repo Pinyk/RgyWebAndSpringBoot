@@ -4,6 +4,7 @@ import com.rgy.rgy.dao.ItemsDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -16,21 +17,33 @@ public class ItemsService {
     @Autowired
     ItemsDao itemsDao;
 
-    public int iadd(String itemsName, String sort, int templateId){
-        int infoState = 0;
-        itemsDao.save(new Items(templateId,itemsName,sort,infoState));
-        Items items = itemsDao.findByItemsName(itemsName);
-        return items.getItemsId();
+    public Boolean add(Items items ){
+        items.setInfoState( 0 );
+        Items save = itemsDao.save( items );
+        if (save != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public List<Items> ireturnAll(){
-        return itemsDao.findAll();
+    public List<Items> findAll(){
+        List<Items> all = itemsDao.findAll();
+        for (int i = 0; i < all.size(); i++) {
+            if (all.get( i ).getInfoState() == 1) {
+                all.remove( i );
+                i--;
+            }
+        }
+        return all;
     }
 
-    public Boolean idel(int itemsId){
+    public Boolean del(Integer itemsId){
         Items items = itemsDao.findByItemsId(itemsId);
         if(items!=null){
             items.setInfoState(1);
+            itemsDao.save( items );
+
             return true;
         }else{
             return false;

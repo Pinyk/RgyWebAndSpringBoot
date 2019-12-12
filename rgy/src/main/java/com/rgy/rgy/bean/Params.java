@@ -18,8 +18,6 @@ public class Params {
     @Column(name = "paramsId")
     private Integer paramsId;
 
-//    @ManyToOne(targetEntity = Items.class)
-//    @JoinColumn(name = "itemsId")
     private Integer itemsId;
 
     @Column
@@ -45,4 +43,84 @@ public class Params {
 
     @Column
     private Integer infoState;
+
+    public Integer getParamsId() {
+        return paramsId;
+    }
+
+    public void setParamsId(Integer paramsId) {
+        this.paramsId = paramsId;
+    }
+
+    public Integer getItemsId() {
+        return itemsId;
+    }
+
+    public void setItemsId(Integer itemsId) {
+        this.itemsId = itemsId;
+    }
+
+    public String getParamsName() {
+        return paramsName;
+    }
+
+    public void setParamsName(String paramsName) {
+        this.paramsName = paramsName;
+    }
+
+    public String getParamsType() {
+        return paramsType;
+    }
+
+    public void setParamsType(String paramsType) {
+        this.paramsType = paramsType;
+    }
+
+    public String getQuaOptionOne() {
+        return quaOptionOne;
+    }
+
+    public void setQuaOptionOne(String quaOptionOne) {
+        this.quaOptionOne = quaOptionOne;
+    }
+
+    public String getQuaOptionTwo() {
+        return quaOptionTwo;
+    }
+
+    public void setQuaOptionTwo(String quaOptionTwo) {
+        this.quaOptionTwo = quaOptionTwo;
+    }
+
+    public String getQuaUnit() {
+        return quaUnit;
+    }
+
+    public void setQuaUnit(String quaUnit) {
+        this.quaUnit = quaUnit;
+    }
+
+    public String getQuaUpperLim() {
+        return quaUpperLim;
+    }
+
+    public void setQuaUpperLim(String quaUpperLim) {
+        this.quaUpperLim = quaUpperLim;
+    }
+
+    public String getQuaLowerLim() {
+        return quaLowerLim;
+    }
+
+    public void setQuaLowerLim(String quaLowerLim) {
+        this.quaLowerLim = quaLowerLim;
+    }
+
+    public Integer getInfoState() {
+        return infoState;
+    }
+
+    public void setInfoState(Integer infoState) {
+        this.infoState = infoState;
+    }
 }

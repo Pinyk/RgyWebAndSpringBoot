@@ -8,5 +8,6 @@ import java.util.List;
 public interface EquipmentTypeDao extends JpaRepository<EquipmentType,Integer> {
     List<EquipmentType> findByEquipmentTypeName(String name);
 
+
     EquipmentType findByEquipmentTypeID(Integer EquipmentTypeID);
 }

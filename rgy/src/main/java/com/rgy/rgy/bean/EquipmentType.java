@@ -28,4 +28,28 @@ public class EquipmentType {
         this.equipmentTypeName = equipmentTypeName;
         this.infoState = infoState;
     }
+
+    public Integer getEquipmentTypeID() {
+        return equipmentTypeID;
+    }
+
+    public void setEquipmentTypeID(Integer equipmentTypeID) {
+        this.equipmentTypeID = equipmentTypeID;
+    }
+
+    public String getEquipmentTypeName() {
+        return equipmentTypeName;
+    }
+
+    public void setEquipmentTypeName(String equipmentTypeName) {
+        this.equipmentTypeName = equipmentTypeName;
+    }
+
+    public Integer getInfoState() {
+        return infoState;
+    }
+
+    public void setInfoState(Integer infoState) {
+        this.infoState = infoState;
+    }
 }

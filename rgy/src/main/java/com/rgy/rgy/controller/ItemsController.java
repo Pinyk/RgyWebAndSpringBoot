@@ -21,26 +21,27 @@ public class ItemsController {
     ItemsService itemsService;
 
     /**
-     * 新增/修改试验项
-     * templateId为上一步(/templates/add)返回参数
-     * @param itemsName
-     * @param sort
-     * @param templateId
+     * 新增实验项
+      * @param items
      * @return
      */
     @PostMapping("/add")
-    public Result iadd(@RequestParam String itemsName,@RequestParam String sort, int templateId){
-        int itemsId = itemsService.iadd(itemsName,sort,templateId);
-        return new Result("success","新增成功", itemsId);
+    public Result add(@RequestBody Items items){
+        if (itemsService.add(items)) {
+            return new Result("success","新增成功");
+        } else {
+            return new Result( "error", "新增失败" );
+        }
     }
 
     /**
      * 返回所有试验项
      * @return
      */
-    @GetMapping("/ireturn")
-    public Result ireturnAll(){
-        List<Items> items = itemsService.ireturnAll();
+
+    @GetMapping("/findall")
+    public Result findAll(){
+        List<Items> items = itemsService.findAll();
         if(items!=null){
             return new Result("success","返回成功",items);
         }else{
@@ -54,8 +55,8 @@ public class ItemsController {
      * @return
      */
     @GetMapping("delete")
-    public Result idel(@RequestParam int itemsId){
-        if(itemsService.idel(itemsId)){
+    public Result idel(@RequestParam Integer itemsId){
+        if(itemsService.del(itemsId)){
             return new Result("success","删除成功");
         }else{
             return new Result("error","删除失败");

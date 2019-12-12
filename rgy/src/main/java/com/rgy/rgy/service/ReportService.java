@@ -17,6 +17,8 @@ public class ReportService {
     ReportDao reportDao;
 
     public Integer radd(Report report){
+        report.setStartDate(report.getStartDate().substring(0,10));
+        report.setEndDate(report.getEndDate().substring(0,10));
         Report report1 = reportDao.save(report);
         return report1.getReportId();
     }
@@ -45,6 +47,8 @@ public class ReportService {
             return false;
         }
         report1 = report;
+        report1.setStartDate(report1.getStartDate().substring(0,10));
+        report1.setEndDate(report1.getEndDate().substring(0,10));
         if(reportDao.save(report1) != null){
             return true;
         }else{

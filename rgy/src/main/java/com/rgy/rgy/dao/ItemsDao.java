@@ -9,5 +9,5 @@ public interface ItemsDao extends JpaRepository<Items,Integer> {
     Items findByItemsName(String itemsName);
     Items findByItemsId(int itemsId);
 
-    List<Items> findByTemplateId(Integer templateId);
+    List<Items> findByTemplateId(Integer TemplateId);
 }

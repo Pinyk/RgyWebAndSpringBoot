@@ -13,30 +13,64 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "items")
-public class Items {
-
+public class Items implements Comparable<Items>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "itemsId")
     private Integer itemsId;
 
-//    @ManyToOne(targetEntity = Template.class)
-//    @JoinColumn(name = "templateId",columnDefinition = "itemsId")
+    @Column
     private Integer templateId;
 
     @Column
     private String itemsName;
 
     @Column
-    private String sort;
+    private Integer sort;
 
     @Column
     private Integer infoState;
 
-    public Items(int templateId, String itemsName, String sort, int infoState) {
+    public Items(Integer templateId, String itemsName, Integer sort, Integer infoState) {
         this.templateId = templateId;
         this.itemsName = itemsName;
         this.sort = sort;
+        this.infoState = infoState;
+    }
+
+    public Integer getItemsId() {
+        return itemsId;
+    }
+
+    public void setItemsId(Integer itemsId) {
+        this.itemsId = itemsId;
+    }
+
+    public Integer getTemplateId() {
+        return templateId;
+    }
+
+    public String getItemsName() {
+        return itemsName;
+    }
+
+    public void setItemsName(String itemsName) {
+        this.itemsName = itemsName;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    public Integer getInfoState() {
+        return infoState;
+    }
+
+    public void setInfoState(Integer infoState) {
         this.infoState = infoState;
     }
 
@@ -44,41 +78,9 @@ public class Items {
         this.templateId = templateId;
     }
 
-
-    public Integer getItemsId() {
-        return itemsId;
+    @Override
+    public int compareTo(Items o) {
+        int i = this.sort - o.getSort();
+        return i;
     }
 }
-
-//    private Integer itemsId;
-//
-//    @ManyToOne(targetEntity = Template.class)
-//    @JoinColumn(name = "templateId",columnDefinition = "itemsId")
-//    private Integer templateId;
-//
-//    @Column
-//    private String itemsName;
-//
-//    @Column
-//    private String sort;
-//
-//    @Column
-//    private Integer infoState;
-//
-//    public Items(int templateId, String itemsName, String sort, int infoState) {
-//        this.templateId = templateId;
-//        this.itemsName = itemsName;
-//        this.sort = sort;
-//        this.infoState = infoState;
-//    }
-//
-//    public void setTemplateId(Integer templateId) {
-//        this.templateId = templateId;
-//    }
-//
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "itemsId")
-//    public Integer getItemsId() {
-//        return itemsId;
-//    }

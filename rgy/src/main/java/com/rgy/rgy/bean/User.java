@@ -75,8 +75,7 @@ public class User implements UserDetails {
     public User(Integer userId, String username, String password, String realName, String phone, String roleId, Integer infoState) {
         this.userId = userId;
         this.username = username;
-        this.password = password;
-        //this.password = new BCryptPasswordEncoder().encode( password );
+        this.password = new BCryptPasswordEncoder().encode( password );
         this.realName = realName;
         this.phone = phone;
         this.roleId = roleId;
@@ -91,20 +90,24 @@ public class User implements UserDetails {
         this.userId = userId;
     }
 
+    @Override
     public String getPassword() {
-        return password;
+        return new BCryptPasswordEncoder().encode( password );
     }
 
+
     public void setPassword(String password) {
-        this.password = password;
-        //this.password = new BCryptPasswordEncoder(  ).encode( password );
+       this.password = password;
     }
+
     public String getUsername() {
         return username;
     }
+
     public void setUsername(String username) {
         this.username = username;
     }
+
     public String getRealName() {
         return realName;
     }

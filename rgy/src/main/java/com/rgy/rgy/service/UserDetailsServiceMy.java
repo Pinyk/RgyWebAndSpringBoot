@@ -10,6 +10,8 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -29,8 +31,12 @@ public class UserDetailsServiceMy implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
         User user = userDao.findByUsername( username );
-        String authorities = getAuthorities(roleDao.findByRoleId( Integer.valueOf( user.getRoleId() ) ));
+        if(user == null) {
+            throw new UsernameNotFoundException( "用户不存在" );
+        }
 
+        String authorities = getAuthorities(roleDao.findByRoleId( Integer.valueOf( user.getRoleId() ) ));
+        System.out.println(user.getPassword());
         user.setAuthorities( AuthorityUtils.commaSeparatedStringToAuthorityList( authorities ));
         return user;
     }
