@@ -16,4 +16,8 @@ public class StartController {
     public String star(){
         return "index";
     }
+    @RequestMapping("/down")
+    public String star2(){
+        return "multifile";
+    }
 }

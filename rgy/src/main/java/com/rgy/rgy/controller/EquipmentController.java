@@ -7,7 +7,10 @@ import com.rgy.rgy.bean.Result;
 import com.rgy.rgy.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -124,4 +127,41 @@ public class EquipmentController {
             return new Result("error","删除失败");
         }
     }
+
+    @RequestMapping("/picUpload")
+    @ResponseBody
+    public String fileUpload(@RequestParam("fileName") MultipartFile file,
+                             @RequestParam("equipmentId")Integer equipmentId){
+        if(file.isEmpty()){
+            return "false";
+        }
+        String fileName = file.getOriginalFilename();
+        System.out.println(fileName+" "+equipmentId);
+        int size = (int) file.getSize();
+        System.out.println(fileName + "-->" + size);
+        String path = "D:\\JAVA\\xxb\\RgyWebAndSpringBoot-master\\rgy\\src\\main\\resources\\equipment_pic" ;
+        String fileName1=path + "\\" + fileName;
+        Equipment equipment=equipmentService.findByEquipmentId(equipmentId);
+        equipment.setPicUrl1(fileName1);
+        equipmentService.update(equipment);
+        File dest = new File(fileName1);
+        if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
+            dest.getParentFile().mkdir();
+        }
+
+        try {
+            file.transferTo(dest); //保存文件
+            return "true";
+        } catch (IllegalStateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return "false";
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return "false";
+        }
+    }
+
+
 }

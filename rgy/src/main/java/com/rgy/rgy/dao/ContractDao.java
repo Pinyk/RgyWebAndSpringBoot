@@ -37,4 +37,7 @@ public interface ContractDao extends JpaRepository<Contract,Integer> {
                                    String X5, String X6, String X7, String X8,
                                    String X9, String X10);
 
+
+    @Query(value = "select * from contract where contract_name like %?1%",nativeQuery = true)
+    List<Contract> findByName(String name);
 }

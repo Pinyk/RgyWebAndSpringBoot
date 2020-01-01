@@ -25,7 +25,10 @@ public class ContractService {
         return contractDao.findContractByContractName(contractName);
     }
 
+    public List<Contract> findByName(String contractName) {
+        return contractDao.findByName(contractName);
 
+    }
     public List<Contract> findByCondition(String contractName,Integer infoState,
                                           String businessType,
                                           String partyA,String partyB,

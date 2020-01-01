@@ -11,8 +11,6 @@ import java.util.List;
 public interface ProjectDao extends JpaRepository<Project,Integer> {
     Project findByProjectName(String projectName);
 
-
-    
     List<Project>  findByProjectType(String projectType);
 
     @Query("select a from Project a where a.projectId=?1")

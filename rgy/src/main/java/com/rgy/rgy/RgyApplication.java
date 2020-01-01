@@ -8,10 +8,7 @@ import org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfigura
 //@EnableAutoConfiguration(exclude = {MultipartAutoConfiguration.class})
 @SpringBootApplication
 public class RgyApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(RgyApplication.class, args);
     }
-
-
 }

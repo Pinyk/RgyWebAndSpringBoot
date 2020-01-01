@@ -90,4 +90,8 @@ public class EquipmentService{
     public List<Equipment> findById(Integer powerPlantID) {
         return equipmentDao.findByPowerPlantID(powerPlantID);
     }
+
+    public Equipment findByEquipmentId(Integer equipmentId) {
+        return equipmentDao.findByEquipmentId(equipmentId);
+    }
 }

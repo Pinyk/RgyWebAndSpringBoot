@@ -1,0 +1,466 @@
+#include "lpc213x.h"
+#include "TypeDef.h"
+#include<string.h>
+
+extern	void IRQEnable(void);
+extern	void IRQDisable(void);
+extern	void FIQEnable(void);
+extern	void FIQDisable(void);
+
+#define Fpclk 11059200			// 
+
+
+#define LINE_L 8			// DD3¡è
+#define PAGE_L 2			// ??3¡è
+const uint32 LED1=1<<17;
+const uint32 LED2=1<<18;
+const uint32 LED3=1<<19;
+const uint32 LED4=1<<20;
+const uint32 P0=1<<4;
+const uint32 P1=1<<5;
+const uint32 P2=1<<6;
+const uint32 P3=1<<7;
+const uint32 P4=1<<8;
+const uint32 P5=1<<9;
+const uint32 P6=1<<21;
+#define KEY1 1<<16
+#define KEY2 1<<14
+
+const uint32 PS[]={
+	P1|P2|P3|P4|P5|P6,
+	P3|P6,
+	P0|P2|P3|P4|P5,
+	P0|P2|P3|P5|P6,
+	P0|P1|P3|P6,
+	P0|P1|P2|P5|P6,
+	P0|P1|P2|P4|P5|P6,
+	P2|P3|P6,
+	P0|P1|P2|P3|P4|P5|P6,
+	P0|P1|P2|P3|P5|P6
+};
+const uint32 PC[]={
+	P0,
+	P0|P1|P2|P4|P5,
+	P1|P6,
+	P1|P4,
+	P2|P4|P5,
+	P3|P4,
+	P3,
+	P0|P1|P4|P5,
+	0,
+	P4
+};
+const uint32 LEDS[]={
+	LED1|LED2|LED3|LED4,
+	LED1|LED2|LED3,
+	LED1|LED2|LED4,
+	LED1|LED2,
+	LED1|LED3|LED4,
+	LED1|LED3,
+	LED1|LED4,
+	LED1,
+	LED2|LED3|LED4,
+	LED2|LED3,
+	LED2|LED4,
+	LED2,
+	LED3|LED4,
+	LED3,
+	LED4,
+	0
+};
+const uint32 LEDC[]={
+	0,
+	LED4,
+	LED3,
+	LED3|LED4,
+	LED2,
+	LED2|LED4,
+	LED2|LED3,
+	LED2|LED3|LED4,
+	LED1,
+	LED1|LED4,
+	LED1|LED3,
+	LED1|LED3|LED4,
+	LED1|LED2,
+	LED1|LED2|LED4,
+	LED1|LED2|LED3,
+	LED1|LED2|LED3|LED4,
+};
+int L=1,LL=0;
+int L1=0,L2=0;
+
+
+typedef struct UartMode
+{
+	uint8 datab;		// ¡Á?3¡è?¨¨??5/6/7/8?¨¦??
+	uint8 stopb;		// ¨ª??1????1/2?¨¦??
+	uint8 parity;		// ????D??¨¦????0-?TD??¨¦,1-??D??¨¦,2-??D??¨¦
+}UARTMODE;
+
+//volatile uint8 rcv_buf[8];		// UART0¨ºy?Y?¨®¨º??o3???
+char rcv_buf[8];
+volatile uint8 rcv_new;			// ?¨®¨º?D?¨ºy?Y¡À¨º??
+volatile uint8 zql_U0IIR;
+volatile uint8 zql_chNum;
+	
+
+void __irq IRQ_Timer0 (void)
+{
+//	if ((IO0SET & BEEP) == 0)
+//	{
+//		IO0SET = BEEP;			// 1?¡À?BEEP
+//	}
+//	else
+//	{
+//		IO0CLR = BEEP;
+//	}
+	
+	loop:
+	if(L==0)
+	{
+		if(L2>=4){
+			L2=0;
+		}
+		switch(L2){
+			case 0:
+				IO0SET=LEDS[8];
+				IO0CLR=LEDC[8];
+				break;
+			case 1:
+				IO0SET=LEDS[4];
+				IO0CLR=LEDC[4];
+				break;
+			case 2:
+				IO0SET=LEDS[2];
+				IO0CLR=LEDC[2];
+				break;
+			case 3:
+				IO0SET=LEDS[1];
+				IO0CLR=LEDC[1];
+				break;
+		}
+		IO0SET=PS[L1];
+		IO0CLR=PC[L1];
+		if(L!=0)
+		goto loop;
+		L2++;
+	}
+	if(L==3)
+	{
+		if(L1<0){
+			L1=0;
+		}
+		
+		if(L2>=4){
+			L2=0;
+		}
+		if(L1!=0){
+		switch(L2){
+			case 0:
+				IO0SET=LEDS[8];
+				IO0CLR=LEDC[8];
+				break;
+			case 1:
+				IO0SET=LEDS[4];
+				IO0CLR=LEDC[4];
+				break;
+			case 2:
+				IO0SET=LEDS[2];
+				IO0CLR=LEDC[2];
+				break;
+			case 3:
+				IO0SET=LEDS[1];
+				IO0CLR=LEDC[1];
+				break;
+		}
+		IO0SET=PS[L1];
+		IO0CLR=PC[L1];
+		if(L!=3)
+		goto loop;
+		L2++;
+		}
+		if(L1==0)
+		{
+			IO0SET=LEDS[0]|PS[0];
+			IO0CLR=PC[0];
+		}
+		
+		IO0SET=PS[L1];
+		IO0CLR=PC[L1];
+		switch(L1){
+			case 0:
+				T0MR0  = (Fpclk);
+				break;
+			case 1:
+				T0MR0  = (Fpclk);
+				break;
+			case 2:
+				T0MR0  = (Fpclk)/5*4;
+				break;
+			case 3:
+				T0MR0  = (Fpclk)/5*3;
+				break;
+			case 4:
+				T0MR0  = (Fpclk)/5*2;
+				break;
+			case 5:
+				T0MR0  = (Fpclk)/5*1;
+				break;
+		}
+		
+		L1--;
+	}
+	if(L==2)
+	{
+		IO0SET=LEDS[0]|PS[0];
+		IO0CLR=PC[0];
+	}
+	if(L==1)
+	{
+		IO0SET=LEDS[0];
+		IO0CLR=PS[8];
+	}
+	if(L==4){
+		L1++;
+		if(L1>5){
+			L1=5;
+		}
+		switch(L1){
+			case 0:
+				L=2;
+				IO0SET=LEDS[0]|PS[0];
+				IO0CLR=PC[0];
+				T0MR0  = (Fpclk);
+				break;
+			case 1:
+				L=0;
+				IO0SET=PS[1];
+				IO0CLR=PC[1];
+				T0MR0  = (Fpclk);
+				break;
+			case 2:
+				L=0;
+				IO0SET=PS[2];
+				IO0CLR=PC[2];
+				T0MR0  = (Fpclk)/5*4;
+				break;
+			case 3:
+				L=0;
+				IO0SET=PS[3];
+				IO0CLR=PC[3];
+				T0MR0  = (Fpclk)/5*3;
+				break;
+			case 4:
+				L=0;
+				IO0SET=PS[4];
+				IO0CLR=PC[4];
+				T0MR0  = (Fpclk)/5*2;
+				break;
+			case 5:
+				L=0;
+				IO0SET=PS[5];
+				IO0CLR=PC[5];
+				T0MR0  = (Fpclk)/5*1;
+				break;
+		}
+	}
+	if(L==5){
+		L1--;
+		if(L1<0){
+			L1=0;
+		}
+		switch(L1){
+			case 0:
+				L=2;
+				IO0SET=LEDS[0]|PS[0];
+				IO0CLR=PC[0];
+				T0MR0  = (Fpclk);
+				break;
+			case 1:
+				L=0;
+				IO0SET=PS[1];
+				IO0CLR=PC[1];
+				T0MR0  = (Fpclk);
+				break;
+			case 2:
+				L=0;
+				IO0SET=PS[2];
+				IO0CLR=PC[2];
+				T0MR0  = (Fpclk)/5*4;
+				break;
+			case 3:
+				L=0;
+				IO0SET=PS[3];
+				IO0CLR=PC[3];
+				T0MR0  = (Fpclk)/5*3;
+				break;
+			case 4:
+				L=0;
+				IO0SET=PS[4];
+				IO0CLR=PC[4];
+				T0MR0  = (Fpclk)/5*2;
+				break;
+			case 5:
+				L=0;
+				IO0SET=PS[5];
+				IO0CLR=PC[5];
+				T0MR0  = (Fpclk)/5*1;
+				break;
+		}
+	}
+	T0IR = 0x01;					
+	VICVectAddr = 0x00;		
+}
+
+void __irq IRQ_UART0 (void)
+{
+	uint8 i=0;
+	rcv_new = 1;			// ¨¦¨¨???¨®¨º?¦Ì?D?¦Ì?¨ºy?Y¡À¨º??
+	
+	zql_U0IIR = (U0IIR >> 1) & 0x07;
+    
+  switch (zql_U0IIR){ 	    // ¡¤????D???' 
+	case 0x02:
+		for (i=0; i<8; i++)
+			rcv_buf[i] = U0RBR;		// ?¨¢¨¨?FIFO¦Ì?¨ºy?Y??2???3y?D??	
+		break;
+	case 0x06:
+		while((U0LSR & 0x01) == 0x01)
+			{
+				rcv_buf[i] = U0RBR;		// ?¨¢¨¨?FIFO¦Ì?¨ºy?Y??2???3y?D??
+				i++;
+			}
+			rcv_buf[i]='\0';	
+		break;
+	}
+	
+	
+	if(strcmp(rcv_buf,"start")==0){
+		L=2;
+	}
+	if(strcmp(rcv_buf,"stop")==0){
+		L=3;
+	}
+	if(strcmp(rcv_buf,"up")==0){
+		L=4;
+	}
+	if(strcmp(rcv_buf,"down")==0){
+		L=5;
+	}
+
+	zql_chNum=i;
+	zql_U0IIR=U0IIR;
+	
+	VICVectAddr = 0x00;			// ?D??'|¨¤¨ª?¨¢¨º?
+}
+
+
+void UART0_SendByte (uint8 dat)
+{
+	U0THR = dat;	// ¨°a¡¤??¨ª¦Ì?¨ºy?Y
+}
+
+
+void UART0_SendBuf (void)
+{
+	uint8 i;
+	
+	for (i=0; i<zql_chNum; i++)
+		UART0_SendByte(rcv_buf[i]);
+	
+	UART0_SendByte(0x0d);
+	UART0_SendByte(0x0a);
+		
+	while ((U0LSR & 0x20) == 0);	// ¦Ì¨¨'y¨ºy?Y¡¤??¨ª¨ª¨º¡À?
+}
+
+
+int8 UART0_Init (uint32 baud, UARTMODE set)
+{
+	uint32 bak;
+	
+	/* 2?¨ºy?¨¬2¨¦¨®?1y?? */
+	if ((baud ==0 ) || (baud > 115200))	return (0);
+	if ((set.datab <5) || (set.datab > 8))	return (0);
+	if ((set.stopb == 0) || (set.stopb > 2)) 	return (0);
+	if (set.parity > 4)	return (0);
+	
+	/* ¨¦¨¨??'??¨²2¡§¨¬??¨º */
+	U0LCR = 0x80;						// DLAB = 1	
+	bak   = (Fpclk >> 4) / baud;
+	U0DLM = bak >> 8;
+	U0DLL = bak & 0xFF;
+	
+	/* ¨¦¨¨??'??¨²??¨º? */
+	bak   = set.datab - 5;				// ¨¦¨¨??¡Á?3¡è-----¡Á?¡À? UxLCR[1:0] ¨ºy?Y
+	if (set.stopb == 2)					// ¨¦¨¨??¨ª??1??3¡è-----¡Á?¡À? UxLCR[2:2] ¨ºy?Y
+		bak |= 0x04;	// ?D??¨º?¡¤??a2??¨ª??1??
+	
+	if (set.parity != 0)				// ¨¦¨¨??¨®D?T'????D??¨¦'-----¡Á?¡À? UxLCR[3:3] ¨ºy?Y
+	{
+		set.parity = set.parity - 1;
+		bak |= 0x08;
+	}
+	bak |= set.parity << 4;				// ¨¦¨¨??????D??¨¦-----¡Á?¡À? UxLCR[3:3] ¨ºy?Y
+	
+	U0LCR = bak;		// ¡Á¡ã??UxLCR,  ?¨°UxLCR[7:7]=0 , ?' ?? DLAB=0
+	
+	return (1);
+}
+
+
+
+int main (void)
+{
+	
+	
+	UARTMODE set;
+	IO0DIR=LED1|LED2|LED3|LED4|PS[8];
+
+	IRQEnable();					// IRQ?D??¨º1?¨¹
+	
+	T0TCR  = 0x03;				
+	T0PR   = 0;						
+											
+	T0MCR  = 0x03;				// ¨¦¨¨??T0MR0????o¨®?'??T0TC??2?2¨²¨¦¨²?D??¡À¨º??
+	T0MR0  = (Fpclk);				// 1???¨®?¡§¨º¡À --- ??????¡À¨º?¦Ì
+	
+	T0TCR  = 0x01;				// ???¡¥?¡§¨º¡À?¡Â0
+	
+	
+	set.datab  = 8;
+	set.stopb  = 1;
+	set.parity = 0;
+	
+	rcv_new = 0;
+	zql_chNum=0;
+	
+	PINSEL0 = 0x00000005;				// ¨¦¨¨??GPIO_0[1:0]¨¢??¨®¦Ì?UART0
+	
+	UART0_Init(115200, set);			// '??¨²3?¨º??¡¥
+	U0FCR = 0x81;						// ¨º1?¨¹FIFO??2?¨¦¨¨??'?¡¤?¦Ì??a8¡Á??¨²
+	U0IER = 0x05;						// ?¨ºD¨ªRBRo¨ª¡Á?¡¤?3?¨º¡À?D?????'?¨®¨º??D??
+	
+	VICIntSelect = 0x00;								// ?¨´¨®D?D??¨ª¡§¦Ì¨¤¨¦¨¨???aIRQ?D??
+	VICVectCntl0 = 0x20 | 0x04;					// ¨¦¨¨???¡§¨º¡À?¡Â0?D??¨ª¡§¦Ì¨¤¡¤???¦Ì? VIC_slot_0
+	VICVectAddr0 = (uint32)IRQ_Timer0;
+	VICIntEnable = 1 << 0x04;	
+	
+	VICVectCntl1 = 0x20 | 0x06;			// UART0¡¤???¦Ì?IRQ slot0???'¡Á???¨®??¨¨??
+	VICVectAddr1 = (uint32)IRQ_UART0;	// ¨¦¨¨??UART0?¨°¨¢?¦Ì??¡¤
+	VICIntEnable = 1 << 0x06;			// ¨º1?¨¹UART0?D??
+
+	while (1)
+	{
+		if (rcv_new == 1)				// ¨¨?1?¨®DUART?¨®¨º????¨°¡Áa¡¤?
+		{	
+			rcv_new =0;
+		}
+	}
+	
+  //  return 0;
+	
+}
+/*********************************************************************************************************
+**                            End Of File
+********************************************************************************************************/

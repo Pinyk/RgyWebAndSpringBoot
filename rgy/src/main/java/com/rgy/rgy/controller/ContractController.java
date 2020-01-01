@@ -60,6 +60,7 @@ public class ContractController {
             return new Result("error","返回失败");
         }
     }
+
 //    /**
 //     * 根据id判断是否有数据
 //     */
@@ -107,7 +108,18 @@ public class ContractController {
 //        }
 //    }
 
-
+    /*
+    根据合同名称模糊查询
+     */
+    @GetMapping("/findbyName")
+    public Result find(@RequestParam String contractName){
+        List<Contract> contract = contractService.findByName(contractName);
+       if(contract!=null && !contract.isEmpty()){
+            return new Result("success","查找成功",contract);
+       }else{
+            return new Result("error","查找失败");
+        }
+    }
     /**
      * 通过综合条件查找合同
      */
@@ -134,6 +146,12 @@ public class ContractController {
         }
     }
 
+
+
+    private String changeFileName(String filename)
+    {
+        return null;
+    }
     //单文件上传
     @PostMapping("/fileUpload")
     public String fileUpload(@RequestParam("file") MultipartFile file){
@@ -144,7 +162,7 @@ public class ContractController {
         System.out.println(fileName);
         int size = (int) file.getSize();
         System.out.println(fileName + "-->" + size);
-        String path = "F:\\热工院项目\\rgy-master\\rgy-master\\src\\main\\resources\\contractfiles" ;
+        String path = "D:\\JAVA\\xxb\\RgyWebAndSpringBoot-master\\rgy\\src\\main\\resources\\contractfiles" ;
         File dest = new File(path + "/" + fileName);
         if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
             dest.getParentFile().mkdir();
@@ -174,7 +192,7 @@ public class ContractController {
             return new Result("error","失败1");
         }
 
-        String path = "F:\\热工院项目\\rgy-master\\rgy-master\\src\\main\\resources\\contractfiles" ;
+        String path = "D:\\JAVA\\xxb\\RgyWebAndSpringBoot-master\\rgy\\src\\main\\resources\\contractfiles" ;
 
         for(MultipartFile file:files){
             String fileName = file.getOriginalFilename();
