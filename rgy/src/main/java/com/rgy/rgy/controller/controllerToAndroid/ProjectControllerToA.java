@@ -51,4 +51,18 @@ public class ProjectControllerToA {
             return new Result("error","返回失败");
         }
     }
+
+    /**
+     * 返回所有项目报价表
+     * @return
+     */
+    @GetMapping("/findall")
+    public Result findAll(){
+        List<Project> projects = projectService.findAll();
+        if(projects != null && !projects.isEmpty()){
+            return new Result("success","返回成功",projects);
+        }else{
+            return new Result("error","返回失败");
+        }
+    }
 }

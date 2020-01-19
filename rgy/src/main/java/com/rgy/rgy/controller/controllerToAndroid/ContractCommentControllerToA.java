@@ -27,12 +27,12 @@ public class ContractCommentControllerToA {
             return new Result( "error", "添加失败" );
         }
     }
-    ////根据合同编号查询历史评论
+    //根据合同编号查询历史评论
     @GetMapping("/findByContractId")
     public Result findAll(@RequestParam  Integer contractId){
-        List<ContractComment> contracts = contractCommentService.getContractCommentsByContractId(contractId);
-        if(contracts != null && !contracts.isEmpty() ){
-            return new Result("success","返回成功",contracts);
+        List<ContractComment> contractComments = contractCommentService.getContractCommentsByContractId(contractId);
+        if(contractComments != null && !contractComments.isEmpty() ){
+            return new Result("success","返回成功",contractComments);
         }else{
             return new Result("error","返回失败");
         }

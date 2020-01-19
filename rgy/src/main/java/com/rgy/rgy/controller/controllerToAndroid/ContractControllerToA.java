@@ -22,7 +22,7 @@ public class ContractControllerToA {
      * 返回所有合同
      * @return
      */
-    @GetMapping("/findAll")
+    @GetMapping("/findall")
     public Result findAll(){
         List<Contract> contracts = contractService.findAll();
         if(contracts != null && !contracts.isEmpty() ){
@@ -39,7 +39,8 @@ public class ContractControllerToA {
      * @return
      */
     @GetMapping("/updateState")
-    public Result update(@RequestParam("infoState")Integer infoState,@RequestParam("contractId")Integer contractId){
+    public Result update(@RequestParam("infoState")Integer infoState,
+                         @RequestParam("contractId")Integer contractId){
 
         Contract contract = contractService.findbyid(contractId);
         contract.setInfoState(infoState);
@@ -77,6 +78,24 @@ public class ContractControllerToA {
         }
     }
 
+    /**
+     * 根据id传数据
+     */
+    @GetMapping("/findbyid")
+    public Result findById(@RequestParam Integer contractId) {
+        Contract contract = contractService.findbyid(contractId);
+        if (contract != null) {
+            return new Result("success","返回成功",contract);
+        }else {
+            return new Result("error","返回失败");
+        }
+    }
+
+    /**
+     * 预览合同
+     * @param res
+     * @param fileName
+     */
     @GetMapping(value = "/contractDownload")
     public void downLoad(HttpServletResponse res,@RequestParam(required = false) String fileName){
 
@@ -88,7 +107,7 @@ public class ContractControllerToA {
         OutputStream os = null;
         try {
             os = res.getOutputStream();
-            bis = new BufferedInputStream(new FileInputStream(new File("D:\\JAVA\\xxb\\RgyWebAndSpringBoot-master\\rgy\\src\\main\\resources\\contractfiles\\"
+            bis = new BufferedInputStream(new FileInputStream(new File("F:\\热工院项目\\rgy-master\\rgy-master\\src\\main\\resources\\contractfiles"
                     + fileName)));
             int i = bis.read(buff);
             while (i != -1) {

@@ -31,14 +31,7 @@ public class SprintBootTests {
     @Autowired
     private ProjectDao projectDao;
 
-    @Test
-    public void test4()
-    {
-        List<String> res=projectDao.findGroupByType("火电及水电按电压等级");
-        for(String e:res){
-            System.out.println(e);
-        }
-    }
+
 
     @Test
     public void test()

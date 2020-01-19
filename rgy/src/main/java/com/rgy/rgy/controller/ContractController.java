@@ -162,7 +162,7 @@ public class ContractController {
         System.out.println(fileName);
         int size = (int) file.getSize();
         System.out.println(fileName + "-->" + size);
-        String path = "D:\\JAVA\\xxb\\RgyWebAndSpringBoot-master\\rgy\\src\\main\\resources\\contractfiles" ;
+        String path = "F:\\热工院项目\\rgy-master\\rgy-master\\src\\main\\resources\\contractfiles" ;
         File dest = new File(path + "/" + fileName);
         if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
             dest.getParentFile().mkdir();
@@ -192,7 +192,7 @@ public class ContractController {
             return new Result("error","失败1");
         }
 
-        String path = "D:\\JAVA\\xxb\\RgyWebAndSpringBoot-master\\rgy\\src\\main\\resources\\contractfiles" ;
+        String path = "F:\\热工院项目\\rgy-master\\rgy-master\\src\\main\\resources\\contractfiles" ;
 
         for(MultipartFile file:files){
             String fileName = file.getOriginalFilename();
